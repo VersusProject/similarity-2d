@@ -1,4 +1,1 @@
-edu.illinois.ncsa.versus.extract.impl.ArrayFeatureExtractor
-edu.illinois.ncsa.versus.extract.impl.RGBHistogramExtractor
-edu.illinois.ncsa.versus.extract.impl.GrayscaleHistogramExtractor
-comparisons.extract.impl.LabeledArrayFeatureExtractor
+gov.nist.itl.versus.similarity.comparisons.extract.impl.LabeledArrayFeatureExtractor
