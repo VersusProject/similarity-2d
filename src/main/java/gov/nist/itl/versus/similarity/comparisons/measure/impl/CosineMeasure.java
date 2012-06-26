@@ -16,6 +16,7 @@
  */
 package gov.nist.itl.versus.similarity.comparisons.measure.impl;
 
+import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -29,9 +30,11 @@ import edu.illinois.ncsa.versus.measure.Similarity;
 import edu.illinois.ncsa.versus.measure.SimilarityNumber;
 import edu.illinois.ncsa.versus.measure.SimilarityPercentage;
 import edu.illinois.ncsa.versus.utility.HasCategory;
+import edu.illinois.ncsa.versus.utility.HasHelp;
+import edu.illinois.ncsa.versus.utility.HelpProvider;
 import gov.nist.itl.versus.similarity.comparisons.MathOps;
 
-public class CosineMeasure implements Measure, HasCategory {
+public class CosineMeasure implements Measure, HasCategory, HasHelp {
 
     private MathOps ops = new MathOps();
 
@@ -134,5 +137,15 @@ public class CosineMeasure implements Measure, HasCategory {
     @Override
     public String getCategory() {
         return "Inner Product family";
+    }
+
+    @Override
+    public InputStream getHelpZipped() {
+        return HelpProvider.getHelpZipped(CosineMeasure.class);
+    }
+
+    @Override
+    public String getHelpSHA1() {
+        return HelpProvider.getHelpSHA1(CosineMeasure.class);
     }
 }
