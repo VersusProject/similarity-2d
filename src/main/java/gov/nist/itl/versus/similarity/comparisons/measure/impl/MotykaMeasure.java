@@ -9,18 +9,15 @@
  * any other characteristic. We would appreciate acknowledgment if the
  * software is used.
  *
- *
- *  @author  Benjamin Long, blong@nist.gov
- *  @version 1.2
- *    Date: Mon Jan 23 07:24:33 EST 2012
+ * name          Motyka 
+ * description   
+ * @author       Benjamin Long
+ * @version      1.4
+ * date          
  */
 package gov.nist.itl.versus.similarity.comparisons.measure.impl;
 
-import java.io.InputStream;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
+import gov.nist.itl.versus.similarity.comparisons.MathOpsE;
 import edu.illinois.ncsa.versus.UnsupportedTypeException;
 import edu.illinois.ncsa.versus.descriptor.Descriptor;
 import edu.illinois.ncsa.versus.descriptor.impl.GrayscaleHistogramDescriptor;
@@ -32,120 +29,188 @@ import edu.illinois.ncsa.versus.measure.SimilarityPercentage;
 import edu.illinois.ncsa.versus.utility.HasCategory;
 import edu.illinois.ncsa.versus.utility.HasHelp;
 import edu.illinois.ncsa.versus.utility.HelpProvider;
-import gov.nist.itl.versus.similarity.comparisons.MathOps;
+import java.io.InputStream;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Iterator;
+import gov.nist.itl.versus.similarity.comparisons.exception.*;
 
-public class MotykaMeasure implements Measure, HasCategory, HasHelp {
+public class MotykaMeasure implements Measure, HasCategory, HasHelp
+{
+	private MathOpsE ops = new MathOpsE();
 
-    private MathOps ops = new MathOps();
+		@Override
+		public SimilarityPercentage normalize(Similarity similarity) {
+			return null;
+		}	
 
-    @Override
-    public SimilarityPercentage normalize(Similarity similarity) {
-        return null;
-    }
+        /**
+         * Compares two RGB Histograms.
+         *
+         * @param feature1 RGBHistogramDescriptor
+         * @param feature2 RGBHistogramDescriptor
+         * @return SimilarityNumber
+         * @throws Exception
+         */	
+		public SimilarityNumber compare(RGBHistogramDescriptor feature1, RGBHistogramDescriptor feature2) throws Exception 
+		{
+					// Check feature lengths, they must be equal
+					if( feature1.getNumBins() != feature2.getNumBins() ) {
+							throw new ImageCompatibilityException("Features must have the same length");
+					}
+					
+					Double[] normHist1 = ops.normalizeRgbHistogram( feature1 );
+					
+						if ( normHist1 == null ) 
+							throw new MathCompatibilityException("Histogram normalization failed for RGBHistogramDescriptor histogram1");					
+					
+					Double[] normHist2 = ops.normalizeRgbHistogram( feature2 );
+					
+						if ( normHist2 == null ) 
+							throw new MathCompatibilityException("Histogram normalization failed for RGBHistogramDescriptor histogram2");
 
-    /**
-     * Compares two RGB Histograms.
-     *
-     * @param feature1 RGBHistogramDescriptor
-     * @param feature2 RGBHistogramDescriptor
-     * @return SimilarityNumber
-     * @throws Exception
-     */
-    public SimilarityNumber compare(RGBHistogramDescriptor feature1, RGBHistogramDescriptor feature2) throws Exception {
-        // Check feature lengths, they must be equal
-        if (feature1.getNumBins() != feature2.getNumBins()) {
-            throw new Exception("Features must have the same length");
+					Double measurement  = ops.histogram_measure_motyka( normHist1, normHist2 );
+									
+						if ( measurement == null ) 
+							throw new SingularityTreatmentException("Received null measurement value");	
+							
+					SimilarityNumber result = new SimilarityNumber(measurement.doubleValue());
+				
+						if ( result == null )
+							throw new SingularityTreatmentException("Received null SimilarityNumber comparison result");							
+						
+					return result;
+		}
+
+        /**
+         * Compares two Grayscale Histograms.
+         *
+         * @param feature1 GrayscaleHistogramDescriptor
+         * @param feature2 GrayscaleHistogramDescriptor
+         * @return SimilarityNumber
+         * @throws Exception
+         */
+        public SimilarityNumber compare(GrayscaleHistogramDescriptor feature1, GrayscaleHistogramDescriptor feature2) throws Exception {
+
+                // Check feature lengths, they must be equal
+                if( feature1.getNumBins() != feature2.getNumBins() ) {
+                        throw new ImageCompatibilityException("Features must have the same length");
+                }
+
+                Double[] normHist1 = ops.normalizeGrayscaleHistogram( feature1 );
+				
+					if ( normHist1 == null ) 
+						throw new MathCompatibilityException("Histogram normalization failed for GrayscaleHistogramDescriptor histogram1");
+				
+                Double[] normHist2 = ops.normalizeGrayscaleHistogram( feature2 );
+				
+					if ( normHist2 == null ) 
+						throw new MathCompatibilityException("Histogram normalization failed for GrayscaleHistogramDescriptor histogram2");				
+
+                Double measurement  = ops.histogram_measure_motyka( normHist1, normHist2 );
+				
+					if ( measurement == null ) 
+						throw new SingularityTreatmentException("Received null measurement value");	
+
+				SimilarityNumber result = new SimilarityNumber(measurement.doubleValue());
+				
+					if ( result == null )
+						throw new SingularityTreatmentException("Received null SimilarityNumber comparison result");
+				
+                return result;
         }
+	
+		@Override
+		public SimilarityNumber compare(Descriptor feature1, Descriptor feature2)	throws Exception {
+				if (feature1 instanceof RGBHistogramDescriptor && feature2 instanceof RGBHistogramDescriptor) {
 
-        double[] normHist1 = ops.rgbNormHistogram2Double(feature1);
-        double[] normHist2 = ops.rgbNormHistogram2Double(feature2);
-        double measurement = ops.d_motyka1(normHist1, normHist2);
-        return new SimilarityNumber(measurement);
-    }
+						RGBHistogramDescriptor histogramFeature1 = (RGBHistogramDescriptor) feature1;
+						
+							if ( histogramFeature1 == null )
+								throw new SWIndependenceException("Feature extraction failed for RGBHistogramDescriptor feature1");
+						
+						RGBHistogramDescriptor histogramFeature2 = (RGBHistogramDescriptor) feature2;
+						
+							if ( histogramFeature2 == null )
+								throw new SWIndependenceException("Feature extraction failed for RGBHistogramDescriptor feature2");
+								
+						SimilarityNumber result = compare(histogramFeature1, histogramFeature2);		
+						
+							if ( result == null )
+								throw new SingularityTreatmentException("Received null RGBHistogramDescriptor comparison value");
+						
+						return result;
+				}
+				else if( feature1 instanceof GrayscaleHistogramDescriptor && feature2 instanceof GrayscaleHistogramDescriptor) {
 
-    /**
-     * Compares two Grayscale Histograms.
-     *
-     * @param feature1 GrayscaleHistogramDescriptor
-     * @param feature2 GrayscaleHistogramDescriptor
-     * @return SimilarityNumber
-     * @throws Exception
-     */
-    public SimilarityNumber compare(GrayscaleHistogramDescriptor feature1, GrayscaleHistogramDescriptor feature2) throws Exception {
+						GrayscaleHistogramDescriptor histogramFeature1 = (GrayscaleHistogramDescriptor) feature1;
+						
+							if ( histogramFeature1 == null )
+								throw new SWIndependenceException("Feature extraction failed for GrayscaleHistogramDescriptor feature1");						
+						
+						GrayscaleHistogramDescriptor histogramFeature2 = (GrayscaleHistogramDescriptor) feature2;
+						
+							if ( histogramFeature2 == null )
+								throw new SWIndependenceException("Feature extraction failed for GrayscaleHistogramDescriptor feature2");
 
-        // Check feature lengths, they must be equal
-        if (feature1.getNumBins() != feature2.getNumBins()) {
-            throw new Exception("Features must have the same length");
-        }
+						SimilarityNumber result = compare(histogramFeature1, histogramFeature2);
+						
+							if ( result == null )
+								throw new SingularityTreatmentException("Received null SimilarityNumber comparison result");
+						
+						return result;
+				}
+				else {
+						throw new SWIndependenceException(
+										"Similarity measure expects features of type " + supportedTypesString() );
+				}
+		}	
 
-        double[] normHist1 = ops.grayScaleNormHistogram2Double(feature1);
-        double[] normHist2 = ops.grayScaleNormHistogram2Double(feature2);
-        double measurement = ops.d_motyka1(normHist1, normHist2);
-        return new SimilarityNumber(measurement);
-    }
+		private String supportedTypesString() {
+			String str="";
+			Set f   = supportedFeaturesTypes();
+			Iterator it = f.iterator();
+			while (it.hasNext()) {
+				str += ((Class)it.next()).getName() + " ";
+			}
+			return str;
+		}
 
-    @Override
-    public SimilarityNumber compare(Descriptor feature1, Descriptor feature2) throws Exception {
-        if (feature1 instanceof RGBHistogramDescriptor && feature2 instanceof RGBHistogramDescriptor) {
+		@Override
+		public Set<Class<? extends Descriptor>> supportedFeaturesTypes()
+		{
+			Set features = new HashSet();
+			features.add( RGBHistogramDescriptor.class );
+			features.add( GrayscaleHistogramDescriptor.class );
+			return features;
+		}
+	
+		public String getFeatureType() {
+			return RGBHistogramDescriptor.class.getName();
+		}
 
-            RGBHistogramDescriptor histogramFeature1 = (RGBHistogramDescriptor) feature1;
-            RGBHistogramDescriptor histogramFeature2 = (RGBHistogramDescriptor) feature2;
-            return compare(histogramFeature1, histogramFeature2);
-        } else if (feature1 instanceof GrayscaleHistogramDescriptor && feature2 instanceof GrayscaleHistogramDescriptor) {
+		@Override
+		public String getName() {
+			return "Motyka Similarity";
+		}
 
-            GrayscaleHistogramDescriptor histogramFeature1 = (GrayscaleHistogramDescriptor) feature1;
-            GrayscaleHistogramDescriptor histogramFeature2 = (GrayscaleHistogramDescriptor) feature2;
-            return compare(histogramFeature1, histogramFeature2);
-        } else {
-            throw new UnsupportedTypeException(
-                    "Similarity measure expects features of type" + supportedTypesString());
-        }
-    }
+		@Override
+		public Class getType() {
+			return MotykaMeasure.class;
+		}	
+		
+		@Override
+		public String getCategory() {
+			return "Intersection Family";
+		}
 
-    private String supportedTypesString() {
-        String str = "";
-        Set f = supportedFeaturesTypes();
-        Iterator it = f.iterator();
-        while (it.hasNext()) {
-            str += ((Class) it.next()).getName() + " ";
-        }
-        return str;
-    }
+		@Override
+		public InputStream getHelpZipped() {
+			return HelpProvider.getHelpZipped(MotykaMeasure.class);
+		}
 
-    @Override
-    public Set<Class<? extends Descriptor>> supportedFeaturesTypes() {
-        Set features = new HashSet();
-        features.add(RGBHistogramDescriptor.class);
-        features.add(GrayscaleHistogramDescriptor.class);
-        return features;
-    }
-
-    public String getFeatureType() {
-        return RGBHistogramDescriptor.class.getName();
-    }
-
-    @Override
-    public String getName() {
-        return "Motyka";
-    }
-
-    @Override
-    public Class getType() {
-        return MotykaMeasure.class;
-    }
-
-    @Override
-    public String getCategory() {
-        return "Intersection family";
-    }
-
-    @Override
-    public InputStream getHelpZipped() {
-        return HelpProvider.getHelpZipped(MotykaMeasure.class);
-    }
-
-    @Override
-    public String getHelpSHA1() {
-        return HelpProvider.getHelpSHA1(MotykaMeasure.class);
-    }
+		@Override
+		public String getHelpSHA1() {
+			return HelpProvider.getHelpSHA1(MotykaMeasure.class);
+		}
 }

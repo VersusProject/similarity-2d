@@ -40,6 +40,7 @@ public class ImageData
 	private int bands = 0;
 	private boolean debug = false;
 	
+	
   // construction
 	public ImageData() {
 		this(new double[1][1][1],false);
@@ -66,6 +67,24 @@ public class ImageData
 	public void setBands( int bands ) { this.bands = bands; }
 	public boolean getDebug() { return debug; }
 	public void setDebug( boolean d ) { debug=d; }
+	
+	public boolean equals( ImageData a ) 
+	{
+		if ( rows != a.getNumRows() ) return false;
+		if ( cols != a.getNumCols() ) return false;
+		if ( bands != a.getNumBands() ) return false;
+		
+		double[][][] avals = a.getValues();
+		int len1 = values.length;
+		int len2 = values[0].length;
+		int len3 = values[0][0].length;
+		for (int i=0; i < len1; i++)
+			for (int j=0; j < len2; j++)
+				for (int k=0; k < len3; k++)
+					if ( values[i][j][k] != avals[i][j][k] )
+						return false;
+		return true;
+	}
 	
   // methods	
   
@@ -142,10 +161,6 @@ public class ImageData
 	 * "pixel 'pass-through'). To conform to the adapter/descriptor/measure pattern, we
 	 * will implement such a minimal adapter and also relocate relevant parts of this code into
 	 * those respective components.
-	 * 
-	 * NOTE: This code should be extended to handle an arbitrary collection of input files.
-	 * It currently mirrors the assumption implicit in the corresponding Matlab implementation
-	 * of only 2 input files.
 	 */
 	public Vector load(File f1, File f2)
 	{
@@ -172,8 +187,6 @@ public class ImageData
 	 * based on whether their respective dimensions are equal (e.g., height and width,
 	 * in the terminology of "rows" and "columns").
 	 * 
-	 * NOTE: Should probably eventually extend this to handle images that aren't of
-	 * identical size. However, this was the assumption of the corresponding Matlab implementation.
 	 */
 	public boolean sameSize(ImageData o1, ImageData o2)
 	{
@@ -181,7 +194,7 @@ public class ImageData
 		int o1_rows = o1.getNumRows();
 		int o2_cols = o2.getNumCols();
 		int o2_rows = o2.getNumRows();
-		
+
 		if ( o1_cols!=o2_cols || o1_rows!=o2_rows) {
 			return false;
 		}
@@ -205,10 +218,13 @@ public class ImageData
 			return null;
 		}
 		
+		//System.out.println("logical:");
 		for (int row=0; row < r.getNumRows(); row++) {
+			
 			for(int col=0; col < r.getNumCols(); col++) {
 				for(int band=0; band < r.getNumBands(); band++) {
 					pixel = r.getInt(row,col,band);
+					//System.out.print(""+pixel + " ");
 					if ( pixel > 0 ) {
 						r.set(row,col,band,1);	// if pixel > 0, set it to 1
 					}
@@ -217,8 +233,9 @@ public class ImageData
 					}
 				}
 			}
+			//System.out.println("");
 		}
-	
+	//	System.out.println(">logical.");
 		return r;
 	}
 	
@@ -341,11 +358,14 @@ public class ImageData
 			System.out.println( e.getMessage() );
 			return null;
 		}				
-		
+	
+		//System.out.println("not:");
 		for (int row=0; row < r.getNumRows(); row++) {
 			for(int col=0; col < r.getNumCols(); col++) {
 				for(int band=0; band < r.getNumBands(); band++) {
 					pixel = bin_o.getInt(row,col,band);
+					//System.out.print(""+pixel+" ");
+					
 					if ( pixel == 1 ) {
 						r.set(row,col,band,0);	// if pixel = 1, set it to 0
 					}
@@ -354,8 +374,10 @@ public class ImageData
 					}
 				}
 			}
+			//System.out.println();
 		}
-
+		//System.out.println(">not.");
+		
 		return r;
 	}
 	
@@ -482,7 +504,8 @@ public class ImageData
 		ArrayList<Double> list = new ArrayList();		// use for storing only those pixel values that are non-zero when it's all said and done
 				
 		// initialize pixel value array
-		for (int i=0; i < 256; i++) { pixel_values[i] = 0; }
+		//for (int i=0; i < 256; i++) { pixel_values[i] = 0; }
+		for (int i=0; i < 255; i++) { pixel_values[i] = 0; }
 
 		// walk and count pixel values
 		for (int row=0; row < o.getNumRows(); row++) {
@@ -495,7 +518,8 @@ public class ImageData
 		
 		// identify and collect only unique pixel values (i.e., those with non-zero counts)
 		int total_unique = 0;
-		for (int i=0; i < 256; i++) {
+		//for (int i=0; i < 256; i++) {
+		for (int i=0; i < 255; i++) {
 			if ( pixel_values[i] != 0 ) {
 				list.add(new Double(i));
 			}

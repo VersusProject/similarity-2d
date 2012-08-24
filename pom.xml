@@ -43,6 +43,11 @@
             <artifactId>versus-image</artifactId>
             <version>0.6.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+        	<groupId>org.functionaljava</groupId>
+        	<artifactId>functionaljava</artifactId>
+        	<version>3.1</version>
+        </dependency>
     </dependencies>
   
 </project>

@@ -9,60 +9,91 @@
  * any other characteristic. We would appreciate acknowledgment if the
  * software is used.
  *
- *
- *  @author  Benjamin Long, blong@nist.gov
- *  @version 1.2
- *    Date: Mon Jan 23 07:24:45 EST 2012
+ * name          TotalErrorRateTest 
+ * description   
+ * @author       Benjamin Long
+ * @version      1.4
+ * date          
  */
-
 package gov.nist.itl.versus.similarity.comparisons.measure.impl;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Iterator;
-
-
-import edu.illinois.ncsa.versus.UnsupportedTypeException;
-import edu.illinois.ncsa.versus.descriptor.Descriptor;
-import edu.illinois.ncsa.versus.descriptor.impl.ThreeDimensionalDoubleArrayFeature;
-import edu.illinois.ncsa.versus.measure.SimilarityNumber;
-import edu.illinois.ncsa.versus.measure.SimilarityPercentage;
-import edu.illinois.ncsa.versus.measure.Similarity;
-import edu.illinois.ncsa.versus.measure.Measure;
+import java.io.InputStream;
 import gov.nist.itl.versus.similarity.comparisons.ImageData;
-import gov.nist.itl.versus.similarity.comparisons.MathOps;
+import gov.nist.itl.versus.similarity.comparisons.MathOpsE;
 import gov.nist.itl.versus.similarity.comparisons.descriptor.impl.LabeledThreeDimensionalDoubleArrayFeature;
 import gov.nist.itl.versus.similarity.comparisons.measure.LabeledMeasure;
+import edu.illinois.ncsa.versus.descriptor.Descriptor;
+import edu.illinois.ncsa.versus.descriptor.impl.ThreeDimensionalDoubleArrayFeature;
+import edu.illinois.ncsa.versus.measure.Measure;
+import edu.illinois.ncsa.versus.measure.Similarity;
+import edu.illinois.ncsa.versus.measure.SimilarityNumber;
+import edu.illinois.ncsa.versus.measure.SimilarityPercentage;
+import edu.illinois.ncsa.versus.utility.HasCategory;
+import edu.illinois.ncsa.versus.utility.HasHelp;
+import edu.illinois.ncsa.versus.utility.HelpProvider;
+import fj.data.Array;
 
-public class TotalErrorRateTestMeasure implements LabeledMeasure
+import gov.nist.itl.versus.similarity.comparisons.exception.*;
+
+
+public class TotalErrorRateTestMeasure implements LabeledMeasure, HasCategory, HasHelp
 {
+	private MathOpsE mops = new MathOpsE();
+
 	@Override
 	public SimilarityPercentage normalize(Similarity similarity) {
 		return null;
 	}		
+
+        /**
+         * Compares two images based on their pixels
+         *
+         * @param feature1 ThreeDimensionalDoubleArrayFeature
+         * @param feature2 ThreeDimensionalDoubleArrayFeature
+         * @return SimilarityNumber
+         * @throws Exception
+         */	
 	
 	public SimilarityNumber compare(ThreeDimensionalDoubleArrayFeature feature1, ThreeDimensionalDoubleArrayFeature feature2) 
 			throws Exception 
 	{
 		// check for same height
 		if (feature1.getHeight() != feature2.getHeight()) {
-			throw new Exception("Features must have the same height");
+			throw new ImageCompatibilityException("Features must have the same height");
 		}
 		// check for same width
 		if (feature1.getWidth() != feature2.getWidth()) {
-			throw new Exception("Features must have the same width");
+			throw new ImageCompatibilityException("Features must have the same width");
 		}
 		// check for same number of bands
 		if (feature1.getNumBands() != feature2.getNumBands()) {
-			throw new Exception("Features must have the same number of bands");
+			throw new ImageCompatibilityException("Features must have the same number of bands");
 		}
 
-		MathOps mops = new MathOps();
 		ImageData im1 = new ImageData(feature1.getValues());
+			
+			if ( im1 == null ) 
+					throw new SWIndependenceException("failed to create object for ThreeDimensionalDoubleArrayFeature pixel array1");
+		
 		ImageData im2 = new ImageData(feature2.getValues());
-		double tet = mops.d_tet(im1, im2 );		
-		return new SimilarityNumber(tet);
+		
+			if ( im2 == null ) 
+					throw new SWIndependenceException("failed to create object for ThreeDimensionalDoubleArrayFeature pixel array2");
+		
+		Double measurement = mops.pixel_measure_tet(im1, im2 );	
+			if ( measurement == null ) 
+				throw new SingularityTreatmentException("Received null measurement value");	
+				
+		SimilarityNumber result = new SimilarityNumber(measurement.doubleValue());
+				
+			if ( result == null )
+				throw new SingularityTreatmentException("Received null RGBHistogramDescriptor comparison value");							
+						
+		return result;		
 	}
 
 	public SimilarityNumber[] compare(LabeledThreeDimensionalDoubleArrayFeature feature1, LabeledThreeDimensionalDoubleArrayFeature feature2) 
@@ -70,16 +101,31 @@ public class TotalErrorRateTestMeasure implements LabeledMeasure
 	{
 		ThreeDimensionalDoubleArrayFeature f1 = null, f2 = null;
 		ImageData labels1[] = feature1.getLabels();
+			if ( labels1 == null ) 
+				throw new SWIndependenceException("failed to create object for LabeledThreeDimensionalDoubleArrayFeature label array1");
 		ImageData labels2[] = feature2.getLabels();
-		SimilarityNumber results[] = new SimilarityNumber[labels1.length];
+			if ( labels2 == null ) 
+				throw new SWIndependenceException("failed to create object for LabeledThreeDimensionalDoubleArrayFeature label array2");
+					
+		SimilarityNumber results[] = new SimilarityNumber[labels1.length];	
+			if ( results == null ) 
+				throw new SWIndependenceException("failed to create object for LabeledSimilarityNumber results");
 		
 		for (int i=0; i < labels1.length; i++ ) {
 			f1 = new ThreeDimensionalDoubleArrayFeature(labels1[i].getValues());
+				if ( f1 == null ) 
+					throw new SWIndependenceException("failed extract a given ThreeDimensionalDoubleArrayFeature label array1");
+				
 			f2 = new ThreeDimensionalDoubleArrayFeature(labels1[i].getValues());
+				if ( f2 == null ) 
+					throw new SWIndependenceException("failed extract a given ThreeDimensionalDoubleArrayFeature label array2");
+			
 			results[i] = compare(f1,f2);
+				if ( results == null ) 
+					throw new SingularityTreatmentException("Received null SimilarityNumber comparison result");
 		}		
 		return results;
-	}		
+	}	
 	
 	@Override
 	public SimilarityNumber compare(Descriptor feature1, Descriptor feature2)	throws Exception {
@@ -87,12 +133,22 @@ public class TotalErrorRateTestMeasure implements LabeledMeasure
 		if (feature1 instanceof ThreeDimensionalDoubleArrayFeature && feature2 instanceof ThreeDimensionalDoubleArrayFeature) {
 			
 			ThreeDimensionalDoubleArrayFeature segmentFeature1 = (ThreeDimensionalDoubleArrayFeature) feature1;
+				if ( segmentFeature1 == null ) 
+					throw new SWIndependenceException("failed to create object for ThreeDimensionalDoubleArrayFeature array1");
+					
 			ThreeDimensionalDoubleArrayFeature segmentFeature2 = (ThreeDimensionalDoubleArrayFeature) feature2;
-			return compare(segmentFeature1, segmentFeature2);
+				if ( segmentFeature2 == null ) 
+					throw new SWIndependenceException("failed to create object for ThreeDimensionalDoubleArrayFeature array2");
+				
+				SimilarityNumber result = compare(segmentFeature1, segmentFeature2);
+					if ( result == null ) 
+						throw new SingularityTreatmentException("Received null SimilarityNumber comparison result");
+						
+			return result;
 		} 
 		else {
-			throw new UnsupportedTypeException(
-					"ERROR: Similarity measure expects features of type" + supportedTypesString() );
+			throw new SWIndependenceException(
+						"Similarity measure expects features of type " + supportedTypesString() );
 		}
 	}	
 
@@ -118,7 +174,7 @@ public class TotalErrorRateTestMeasure implements LabeledMeasure
 	public String getFeatureType() {
 		return ThreeDimensionalDoubleArrayFeature.class.getName();
 	}
-		
+	
 	@Override
 	public String getName() {
 		return "TotErrRateTestMeasure";
@@ -127,6 +183,20 @@ public class TotalErrorRateTestMeasure implements LabeledMeasure
 	@Override
 	public Class getType() {
 		return TotalErrorRateTestMeasure.class;
-	}
+	}	
 	
+	@Override
+	public String getCategory() {
+		return "Pixel-Based Family";
+	}
+
+	@Override
+	public InputStream getHelpZipped() {
+		return HelpProvider.getHelpZipped(TotalErrorRateTestMeasure.class);
+	}
+
+	@Override
+	public String getHelpSHA1() {
+		return HelpProvider.getHelpSHA1(TotalErrorRateTestMeasure.class);
+	}
 }
