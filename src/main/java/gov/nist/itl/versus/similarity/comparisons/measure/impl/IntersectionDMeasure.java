@@ -17,8 +17,10 @@
  */
 package gov.nist.itl.versus.similarity.comparisons.measure.impl;
 
-import gov.nist.itl.versus.similarity.comparisons.MathOpsE;
-import edu.illinois.ncsa.versus.UnsupportedTypeException;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import edu.illinois.ncsa.versus.descriptor.Descriptor;
 import edu.illinois.ncsa.versus.descriptor.impl.GrayscaleHistogramDescriptor;
 import edu.illinois.ncsa.versus.descriptor.impl.RGBHistogramDescriptor;
@@ -27,15 +29,10 @@ import edu.illinois.ncsa.versus.measure.Similarity;
 import edu.illinois.ncsa.versus.measure.SimilarityNumber;
 import edu.illinois.ncsa.versus.measure.SimilarityPercentage;
 import edu.illinois.ncsa.versus.utility.HasCategory;
-import edu.illinois.ncsa.versus.utility.HasHelp;
-import edu.illinois.ncsa.versus.utility.HelpProvider;
-import java.io.InputStream;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Iterator;
+import gov.nist.itl.versus.similarity.comparisons.MathOpsE;
 import gov.nist.itl.versus.similarity.comparisons.exception.*;
 
-public class IntersectionDMeasure implements Measure, HasCategory, HasHelp
+public class IntersectionDMeasure implements Measure, HasCategory
 {
 	private MathOpsE ops = new MathOpsE();
 
@@ -202,15 +199,5 @@ public class IntersectionDMeasure implements Measure, HasCategory, HasHelp
 		@Override
 		public String getCategory() {
 			return "Intersection Family";
-		}
-
-		@Override
-		public InputStream getHelpZipped() {
-			return HelpProvider.getHelpZipped(IntersectionDMeasure.class);
-		}
-
-		@Override
-		public String getHelpSHA1() {
-			return HelpProvider.getHelpSHA1(IntersectionDMeasure.class);
 		}
 }
