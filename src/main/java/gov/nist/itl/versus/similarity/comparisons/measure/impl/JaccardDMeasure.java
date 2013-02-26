@@ -17,10 +17,10 @@
  */
 package gov.nist.itl.versus.similarity.comparisons.measure.impl;
 
+import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
 import edu.illinois.ncsa.versus.descriptor.Descriptor;
 import edu.illinois.ncsa.versus.descriptor.impl.GrayscaleHistogramDescriptor;
 import edu.illinois.ncsa.versus.descriptor.impl.RGBHistogramDescriptor;
@@ -29,10 +29,15 @@ import edu.illinois.ncsa.versus.measure.Similarity;
 import edu.illinois.ncsa.versus.measure.SimilarityNumber;
 import edu.illinois.ncsa.versus.measure.SimilarityPercentage;
 import edu.illinois.ncsa.versus.utility.HasCategory;
+import edu.illinois.ncsa.versus.utility.HasHelp;
+import edu.illinois.ncsa.versus.utility.HelpProvider;
 import gov.nist.itl.versus.similarity.comparisons.MathOpsE;
-import gov.nist.itl.versus.similarity.comparisons.exception.*;
+import gov.nist.itl.versus.similarity.comparisons.exception.ImageCompatibilityException;
+import gov.nist.itl.versus.similarity.comparisons.exception.MathCompatibilityException;
+import gov.nist.itl.versus.similarity.comparisons.exception.SWIndependenceException;
+import gov.nist.itl.versus.similarity.comparisons.exception.SingularityTreatmentException;
 
-public class JaccardDMeasure implements Measure, HasCategory
+public class JaccardDMeasure implements Measure, HasCategory, HasHelp
 {
 	private MathOpsE ops = new MathOpsE();
 
@@ -200,4 +205,14 @@ public class JaccardDMeasure implements Measure, HasCategory
 		public String getCategory() {
 			return "Inner Product Family";
 		}
+		
+		@Override
+		public InputStream getHelpZipped() {
+			return HelpProvider.getHelpZipped(JaccardDMeasure.class);
+		}
+
+		@Override
+		public String getHelpSHA1() {
+			return HelpProvider.getHelpSHA1(JaccardDMeasure.class);
+		}			
 }

@@ -15,26 +15,32 @@
  * @version      1.4
  * date          
  */
+ 
 package gov.nist.itl.versus.similarity.comparisons.measure.impl;
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
 import edu.illinois.ncsa.versus.descriptor.Descriptor;
 import edu.illinois.ncsa.versus.descriptor.impl.ThreeDimensionalDoubleArrayFeature;
+import edu.illinois.ncsa.versus.measure.Measure;
 import edu.illinois.ncsa.versus.measure.Similarity;
 import edu.illinois.ncsa.versus.measure.SimilarityNumber;
 import edu.illinois.ncsa.versus.measure.SimilarityPercentage;
 import edu.illinois.ncsa.versus.utility.HasCategory;
+import edu.illinois.ncsa.versus.utility.HasHelp;
+import edu.illinois.ncsa.versus.utility.HelpProvider;
+import gov.nist.itl.versus.similarity.comparisons.descriptor.impl.LabeledThreeDimensionalDoubleArrayFeature;
+import gov.nist.itl.versus.similarity.comparisons.exception.ImageCompatibilityException;
+import gov.nist.itl.versus.similarity.comparisons.exception.SingularityTreatmentException;
+import gov.nist.itl.versus.similarity.comparisons.exception.SWIndependenceException;
 import gov.nist.itl.versus.similarity.comparisons.ImageData;
 import gov.nist.itl.versus.similarity.comparisons.MathOpsE;
-import gov.nist.itl.versus.similarity.comparisons.descriptor.impl.LabeledThreeDimensionalDoubleArrayFeature;
-import gov.nist.itl.versus.similarity.comparisons.exception.*;
 import gov.nist.itl.versus.similarity.comparisons.measure.LabeledMeasure;
+import java.io.InputStream;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 
-public class JaccardPixelMeasure implements LabeledMeasure, HasCategory
+public class JaccardPixelMeasure implements LabeledMeasure, HasCategory, HasHelp
 {
 	private MathOpsE mops = new MathOpsE();
 
@@ -183,4 +189,14 @@ public class JaccardPixelMeasure implements LabeledMeasure, HasCategory
 	public String getCategory() {
 		return "Pixel-Based Family";
 	}
+	
+	@Override
+	public InputStream getHelpZipped() {
+		return HelpProvider.getHelpZipped(JaccardPixelMeasure.class);
+	}
+
+	@Override
+	public String getHelpSHA1() {
+		return HelpProvider.getHelpSHA1(JaccardPixelMeasure.class);
+	}	
 }
