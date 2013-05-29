@@ -12,7 +12,7 @@ package gov.nist.itl.versus.similarity.comparisons;
  * software is used.
  *
  *
- *  @author  Benjamin Long, blong@nist.gov
+ *  @author  B. Long
  *  @version 1.3
  */
 
@@ -24,21 +24,24 @@ package gov.nist.itl.versus.similarity.comparisons;
  *	description:	Each assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
  *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
  *  
- *  @author 		Benjamin Long, blong@nist.gov
+ *  @author 		B. Long
  *  version:		1.0
  */	
 
-import edu.illinois.ncsa.versus.descriptor.impl.GrayscaleHistogramDescriptor;
-import edu.illinois.ncsa.versus.descriptor.impl.RGBHistogramDescriptor;
-import gov.nist.itl.versus.similarity.comparisons.exception.HWIndependenceException;
-import gov.nist.itl.versus.similarity.comparisons.exception.SingularityTreatmentException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.TreeSet;
 
+import edu.illinois.ncsa.versus.descriptor.impl.GrayscaleHistogramDescriptor;
+import edu.illinois.ncsa.versus.descriptor.impl.RGBHistogramDescriptor;
+import gov.nist.itl.versus.similarity.comparisons.exception.HWIndependenceException;
+import gov.nist.itl.versus.similarity.comparisons.exception.SingularityTreatmentException;
+
 public class MathOpsE 
 {
+	
+	public final static double EPSILON = 0.0000001;
 	
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
  * Histogram-based measures.
@@ -54,7 +57,7 @@ public class MathOpsE
 		 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 		 *					
 		 *  
-		 *  @author 		Benjamin Long, blong@nist.gov
+		 *  @author 		B. Long
 		 *  version:		1.0
 		 */		 	
 		 
@@ -80,7 +83,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *					
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */		
 	
@@ -103,7 +106,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .				
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 *  
 	 */		
@@ -114,9 +117,9 @@ public class MathOpsE
 		  chkargs("histogram_measure_minkowski",P,Q);		
 	      Double[] D1 = sub(P,Q);
 	  	  Double[] D2 = abs(D1);
-	  	  Double[] D3 = square(D2);
+	  	  Double[] D3 = cube(D2);
 	  	  Double d4 = sum(D3);
-	  	  Double d5 = sqrt(d4);
+	  	  Double d5 = cbrt(d4);
 	  	  chkresult("histogram_measure_minkowski",d5);
 	  	  return d5;
 	}
@@ -129,7 +132,7 @@ public class MathOpsE
  *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
  *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
  *  
- *  @author 		Benjamin Long, blong@nist.gov
+ *  @author 		B. Long
  *  version:		1.0
  */	
 	
@@ -152,7 +155,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */		
 	
@@ -181,7 +184,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */		
 	
@@ -235,7 +238,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .				
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */		
 	
@@ -264,7 +267,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */	
 	
@@ -295,7 +298,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */		
 	
@@ -324,7 +327,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */	
 	
@@ -352,7 +355,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */	
 	
@@ -371,6 +374,10 @@ public class MathOpsE
 	{
 		  chkargs("histogram_measure_intersection_dNonIS",P,Q);		
 	      Double d1 = histogram_measure_intersection_IS(P,Q);
+	   // Case of normalized histograms
+		  if (d1 > 1 && Math.abs(sum(P) - 1) < MathOpsE.EPSILON && Math.abs(sum(Q) - 1) < MathOpsE.EPSILON) {  
+			  return 0.0;
+		  }
 		  Double d2 = sub(1.0d,d1);      
 	  	  chkresult("histogram_measure_intersection_dNonIS",d2);
 	  	  return d2;		
@@ -403,7 +410,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */		
 	
@@ -450,7 +457,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 *
 	 */	 	
@@ -475,10 +482,15 @@ public class MathOpsE
 	// eqn #17.1
 	public Double histogram_measure_czekanowski_dCze(Double[] P, Double[] Q) throws Exception
 	{
-		  chkargs("histogram_measure_czekanowski_dCze",P,Q);		
-		  Double d1 = sub(1.0d,histogram_measure_czekanowski(P,Q)); 	        
-	  	  chkresult("histogram_measure_czekanowski_dCze",d1);
-		  return d1;				
+		  chkargs("histogram_measure_czekanowski_dCze",P,Q);
+		   // Case of normalized histograms
+		  Double d1 = histogram_measure_czekanowski(P,Q); 
+			  if (d1 > 1 && Math.abs(sum(P) - 1) < MathOpsE.EPSILON && Math.abs(sum(Q) - 1) < MathOpsE.EPSILON) {  
+				  return 0.0;
+			  }
+		  Double d2 = sub(1.0d,d1); 	        
+	  	  chkresult("histogram_measure_czekanowski_dCze",d2);
+		  return d2;				
 	}	
 	
 	// eqn #17.2
@@ -507,7 +519,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *					 
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 *
 	 */		
@@ -532,9 +544,14 @@ public class MathOpsE
 	public Double histogram_measure_motyka_dMot(Double[] P, Double[] Q) throws Exception
 	{
 		  chkargs("histogram_measure_motyka_dMot",P,Q);
-		  Double d1 = sub(1.0d, histogram_measure_motyka(P,Q));        
-	  	  chkresult("histogram_measure_motyka_dMot",d1);
-		  return d1;
+		  Double d1 = histogram_measure_motyka(P,Q);
+		   // Case of normalized histograms
+		  if (d1 > 1 && Math.abs(sum(P) - 1) < MathOpsE.EPSILON && Math.abs(sum(Q) - 1) < MathOpsE.EPSILON) {  
+			  return 0.0;
+		  }
+		  Double d2 = sub(1.0d, d1);        
+	  	  chkresult("histogram_measure_motyka_dMot",d2);
+		  return d2;
 	}
 
 	// eqn #19.2
@@ -561,7 +578,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 *
 	 */	 	
@@ -601,7 +618,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */		
 	
@@ -628,7 +645,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */	 	
 	
@@ -696,7 +713,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */	
 	
@@ -718,7 +735,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */	
 	
@@ -747,7 +764,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *					
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */		
 
@@ -783,7 +800,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 *
 	 */		
@@ -837,7 +854,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 *
 	 */  	
@@ -878,10 +895,15 @@ public class MathOpsE
 	// eqn #39.1 (a.k.a., #29.1, was misnamed in paper)
 	public Double histogram_measure_jaccard_dJac1(Double[] P, Double[] Q) throws Exception
 	{
-		  chkargs("histogram_measure_jaccard_dJac1",P,Q);		  
-		  Double d1 = sub(1.0d, histogram_measure_jaccard(P,Q));
-	  	  chkresult("histogram_measure_jaccard_dJac1",d1);
-	      return d1;		
+		  chkargs("histogram_measure_jaccard_dJac1",P,Q);
+		  Double d1 = histogram_measure_jaccard(P,Q);
+		  // Case of normalized histograms
+		  if (d1 > 1 && Math.abs(sum(P) - 1) < MathOpsE.EPSILON && Math.abs(sum(Q) - 1) < MathOpsE.EPSILON) {  
+			  return 0.0;
+		  }
+		  Double d2 = sub(1.0d,d1);
+	  	  chkresult("histogram_measure_jaccard_dJac1",d2);
+	      return d2;		
 	}	
 	
 	// eqn #39.2 (a.k.a., #29.2, was misnamed in paper)
@@ -927,7 +949,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */	
 	
@@ -957,9 +979,15 @@ public class MathOpsE
 	public Double histogram_measure_dice_dDice1(Double[] P, Double[] Q) throws Exception
 	{
 		  chkargs("histogram_measure_dice_dDice1",P,Q);
-		  Double d1 = sub(1.0d, histogram_measure_dice(P,Q));       
-	  	  chkresult("histogram_measure_dice_dDice1",d1);
-	      return d1;		
+		  Double d1 = histogram_measure_dice(P,Q);
+		  // Case of normalized histograms
+		  if (d1 > 1 && Math.abs(sum(P) - 1) < MathOpsE.EPSILON && Math.abs(sum(Q) - 1) < MathOpsE.EPSILON) {  
+			  return 0.0;
+		 }
+		
+		  Double d2 = sub(1.0d, d1);       
+	  	  chkresult("histogram_measure_dice_dDice1",d2);
+	      return d2;		
 	}	
 
 	// eqn #31.2 
@@ -993,7 +1021,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */
 	
@@ -1017,7 +1045,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */	
 	
@@ -1028,6 +1056,10 @@ public class MathOpsE
 	      Double[] D1 = mult(P,Q);
 		  Double[] D2 = sqrt(D1);
 		  Double d3 = sum(D2);
+		  // Case of normalized histograms
+		  if (d3 > 1 && Math.abs(sum(P) - 1) < MathOpsE.EPSILON && Math.abs(sum(Q) - 1) < MathOpsE.EPSILON) {  
+			  return 0.0;
+		  }
 		  Double d4	= ln(d3);		  
 		  Double d5	= mult(-1.0d, d4);		               
 	  	  chkresult("histogram_measure_bhattacharyya",d5);
@@ -1042,7 +1074,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 *
 	 */	
@@ -1055,6 +1087,10 @@ public class MathOpsE
 	      Double[] D1 = mult(P,Q);
 		  Double[] D2 = sqrt(D1);
 		  Double d3 = sum(D2);
+		  // Case of normalized histograms
+		  if (d3 > 1 && Math.abs(sum(P) - 1) < MathOpsE.EPSILON && Math.abs(sum(Q) - 1) < MathOpsE.EPSILON) {  
+			  return 0.0;
+		  }
 		  
 		  // inside sqrt
 		  Double d4 = sub(1d, d3);
@@ -1093,7 +1129,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 *
 	 */	
@@ -1104,7 +1140,11 @@ public class MathOpsE
 		  chkargs("histogram_measure_matusita",P,Q);
 	      Double[] D1 = mult(P,Q);
 		  Double[] D2 = sqrt(D1);
-		  Double d3 = sum(D2);		  			  
+		  Double d3 = sum(D2);
+		  // Case of normalized histograms
+		  if (d3 > 1 && Math.abs(sum(P) - 1) < MathOpsE.EPSILON && Math.abs(sum(Q) - 1) < MathOpsE.EPSILON) {  
+			  return 0.0;
+		  }
 		  Double d4 = mult(2.0d, d3);		               
 		  Double d5 = sub(2.0d, d4);
 		  Double d6 = sqrt(d5);
@@ -1134,7 +1174,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */	
 	
@@ -1155,9 +1195,14 @@ public class MathOpsE
 	public Double histogram_measure_squared_chord_Ssqc1(Double[] P, Double[] Q) throws Exception
 	{
 		  chkargs("histogram_measure_squared_chord_Ssqc1",P,Q);
-	      Double d1 = sub(1.0d, histogram_measure_squared_chord(P,Q));	                              
-	  	  chkresult("histogram_measure_squared_chord_Ssqc1",d1);
-		  return d1;		
+		  Double d1 = histogram_measure_squared_chord(P,Q);
+		  // Case of normalized histograms
+		  if (d1 > 1 && Math.abs(sum(P) - 1) < MathOpsE.EPSILON && Math.abs(sum(Q) - 1) < MathOpsE.EPSILON) {  
+			  return 0.0;
+		  }
+	      Double d2 = sub(1.0d, d1);	                              
+	  	  chkresult("histogram_measure_squared_chord_Ssqc1",d2);
+		  return d2;		
 	}	
 	
 	// eqn #39.2
@@ -1187,7 +1232,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */		
 	
@@ -1210,7 +1255,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */			
 	
@@ -1236,7 +1281,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */	
 	
@@ -1262,7 +1307,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */	
 	
@@ -1290,7 +1335,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */	
 	
@@ -1319,7 +1364,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */	
 	
@@ -1349,7 +1394,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */
 	
@@ -1379,7 +1424,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 *
 	 */
@@ -1412,7 +1457,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */	
 	
@@ -1423,8 +1468,7 @@ public class MathOpsE
 			  // right-most term
 		      Double[] D1 = div(P,Q);      		      
 			  // combine
-		      Double[] D2 = ln(D1);		            		        
-		      Double[] D3 = mult(P,D2);		      
+		      Double[] D3 = a_Ln_b(P,D1);		      
 			  Double d4 = sum(D3);			  			  
 		  	  chkresult("histogram_measure_kullback_leibler",d4);
 			  return d4;		
@@ -1438,7 +1482,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */	
 	
@@ -1449,9 +1493,8 @@ public class MathOpsE
 		  // right-most term
 	      Double[] D1 = div(P,Q);      		      
 		  // combine
-	      Double[] D2 = ln(D1);	      
 	      Double[] D3 = sub(P,Q);	            		        
-	      Double[] D4 = mult(D3,D2);
+	      Double[] D4 = a_Ln_b(D3,D1);
 		  Double d5 = sum(D4);
 	  	  chkresult("histogram_measure_jeffreys",d5);
 		  return d5;
@@ -1465,7 +1508,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */	
 	 
@@ -1481,8 +1524,7 @@ public class MathOpsE
 		  // right-most term: combine
 	      Double[] D4 = div(D3,D1);	 
 		  // combine
-	      Double[] D5 = ln(D4);
-		  Double[] D6 = mult(P,D5);		  
+		  Double[] D6 = a_Ln_b(P,D4);		  
 		  Double d7 = sum(D6);		  			  
 	  	  chkresult("histogram_measure_k_divergence",d7);
 		  return d7;		
@@ -1496,7 +1538,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */	
 	
@@ -1512,9 +1554,8 @@ public class MathOpsE
 	      Double[] D3 = mult(D2,Q);      		            		        
 		  // combine
 	      Double[] D4 = div(D3,D1);      		      
-	      Double[] D5 = ln(D4);
 		  // finish right-most term
-		  Double[] D6 = mult(Q,D5);
+		  Double[] D6 = a_Ln_b(Q,D4);
 		  
 		  // left-most term
 		  // bottom
@@ -1524,9 +1565,8 @@ public class MathOpsE
 	      Double[] D9 = mult(D8,P);      		            		        
 		  // combine
 	      Double[] D10 = div(D9,D7);      		      
-	      Double[] D11 = ln(D10);
 		  // finish left-most term
-		  Double[] D12 = mult(P,D11);		  
+		  Double[] D12 = a_Ln_b(P,D10);		  
 		  
 		  // combine left and right terms
 		  Double[] D13 = add(D12, D6);   
@@ -1544,7 +1584,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */	
 	
@@ -1560,8 +1600,7 @@ public class MathOpsE
 	      Double[] D3 = mult(D2,Q);      		            		        
 		  // combine
 	      Double[] D4 = div(D3,D1);      		      
-	      Double[] D5 = ln(D4);
-		  Double[] D6 = mult(Q,D5);
+		  Double[] D6 = a_Ln_b(Q,D4);
 		  Double d7	= sum(D6);
 		  
 		  // left-most term: sum P * ln( 2P / P+Q )
@@ -1572,8 +1611,7 @@ public class MathOpsE
 	      Double[] D9 = mult(D8,P);      		   
 		  // combine
 	      Double[] D10 = div(D9,D7);      		      
-	      Double[] D11 = ln(D10);
-		  Double[] D12 = mult(P,D11);
+		  Double[] D12 = a_Ln_b(P,D10);
 		  Double d12 = sum(D12);		
 		  
 		  // add them
@@ -1596,7 +1634,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
      *	 
 	 */
@@ -1609,26 +1647,17 @@ public class MathOpsE
 	      Double[] D1 = mkConstArray(Q.length,2.0d);      		      
 	      Double[] D2 = add(P,Q);      		      
 	      Double[] D3 = div(D2,D1);      		      
-	      Double[] D4 = ln(D3);
+	      Double[] D4 = a_Ln_b(D3, D3);
 	      
-	      // middle-term: (P+Q)/2
-	      Double[] D5 = mkConstArray(Q.length,2.0d);      		      
-	      Double[] D6 = add(P,Q);      		      
-	      Double[] D7 = div(D6,D5);      		      
-	
-	      // last 2 combined      
-		  Double[] D8 = mult(D7,D4);
 
 		  // left-most term
 		  Double[] D9 = mkConstArray(Q.length,2.0d);
 		  
-		  // Q+ln Q
-		  Double[] D10 = ln(Q);
-		  Double[] D11 = mult(Q, D10);
+		  // Q*ln Q
+		  Double[] D11 = a_Ln_b(Q, Q);// mult(Q, D10);
 		  
-		  // P+ln P
-		  Double[] D12 = ln(P);
-		  Double[] D13 = mult(P, D12);
+		  // P*ln P
+		  Double[] D13 = a_Ln_b(P,P); //mult(P, D12);
 		  
 		  // add them
 		  Double[] D14 = add(D13, D11);
@@ -1637,7 +1666,7 @@ public class MathOpsE
 		  Double[] D15 = div(D14, D9);
 		  
 		  // first term - last combined term
-		  Double[] D16 = sub(D15, D8);  
+		  Double[] D16 = sub(D15, D4);  
 
 		  // final term: summation of last
 		  Double d17 = sum(D16);		
@@ -1655,7 +1684,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */
 	
@@ -1673,7 +1702,6 @@ public class MathOpsE
 	      Double[] D5 = add(P,Q);
 		  // combine
 	      Double[] D6 = div(D5,D4);
-	      Double[] D7 = ln(D6);
 	      
 		  // left-most term
 		  // top
@@ -1681,7 +1709,7 @@ public class MathOpsE
 	      Double[] D9 = mkConstArray(Q.length, 2.0d);
 		  // combine
 	      Double[] D10= div(D8,D9);
-	      Double[] D11= mult(D10,D7);
+	      Double[] D11= a_Ln_b(D10,D6);
 	      Double d12 = sum(D11);
 	      
 	  	  chkresult("histogram_measure_taneja_difference",d12);
@@ -1696,7 +1724,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */
 	
@@ -1735,7 +1763,7 @@ public class MathOpsE
 	 *	description:	Assumes 2 probability distribution functions (1D vector PDFs) as input and generates a single numerical output.
 	 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 	 *  
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */	
 	
@@ -1781,7 +1809,7 @@ public class MathOpsE
 		 *	description:	Takes 2 representations of image pixel data as input and generates a single numerical output.
 		 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 		 *  
-		 *  @author 		Benjamin Long, blong@nist.gov
+		 *  @author 		B. Long
 		 *  version:		1.0
 		 */	
 
@@ -1841,303 +1869,14 @@ public class MathOpsE
 		  return ARI;
 	  }
 	  
-	  
-	  /*
-	   * Perform equivalent of Gauss's Sum (N*(N-1))/2 for a vector of integer values.
-	   */
-	  public Integer gaussSum( Integer[] V ) throws Exception {
-		  
-		  chkargs("gaussSum",V);
-		  int len1 = V.length;
-		  Integer[] V2sub1 = sub(V, 1);					// subtract 1 from vector elements
-		  Integer[] mulResult = dotProd(V, V2sub1);		// multiply them
-		  Integer sum = sum(mulResult);
-		  Integer div = div( sum, 2);
-		  chkresult("gaussSum",div);
-		  
-		  return div;
-	  }
-
-	  public Double gaussSum( Double [] V ) throws Exception {
-		  chkargs("gaussSum",V);
-		  int len1 = V.length;
-		  Double[] V2sub1 = sub(V, 1.0d);					// subtract 1 from vector elements
-		  Double[] mulResult = dotProd(V, V2sub1);		// multiply them
-		  Double sum = sum(mulResult);
-		  Double result = div( sum, 2.0d);
-		  chkresult("gaussSum",result);
-		  return result;
-	  }	  
-	  
-	  public int gaussSum( Integer N ) throws Exception {
-		  chkargs("gaussSum",N);
-		  Integer result = (N*(N-1)) / 2;
-		  chkresult("gaussSum", result);
-		  return result;
-	  }
-	  
-	  public Double gaussSum( Double N ) throws Exception {
-		  chkargs("gaussSum",N);
-		  Double result = (N*(N-1)) / 2;
-		  chkresult("gaussSum", result);
-		  return result;		  
-	  }	  
-	  
-	  
-	  public Integer[] sub( Integer[] V, Integer num ) throws Exception {
-		  chkargs("sub", V);
-		  chkargs("sub", num);
-		  int len = V.length;
-		  Integer[] V2 = new Integer[len];
-		  for (int i=0; i < len; i++) {
-			  V2[i] = V[i] - num;
-		  }
-		  chkresult("sub", V2);
-		  return V2;
-	  }
-	  
-	  public Double[] sub( Double[] V, Double num ) throws Exception {
-		  chkargs("sub", V);
-		  chkargs("sub", num);
-		  int len = V.length;
-		  Double[] V2 = new Double[len];
-		  for (int i=0; i < len; i++) {
-			  V2[i] = V[i] - num;
-		  }
-		  chkresult("sub", V2);
-		  return V2;
-	  }	  
-	  
-	  public Integer[] dotProd( Integer[] V1, Integer[] V2 ) throws Exception {
-		  chkargs("dotProd", V1);
-		  chkargs("dotProd", V2);
-		  int len1 = V1.length;
-		  int len2 = V2.length;
-		  Integer[] result = null;
-		  
-		  // NOTE: These should be the same length		  
-		  if ( len1 != len2 ) throw new Exception("vectors are not the same length");
-		  
-		  // if get here, assume they're the same length
-		  result = new Integer[len1];		  
-		  for (int i=0; i < len1; i++) {
-			  result[i] = V1[i] * V2[i];
-		  }
-		  
-		  chkresult("dotProd", result);
-		  
-		  return result;
-	  }
-	  
-	  public Double[] dotProd( Double[] V1, Double[] V2 ) throws Exception {
-		  chkargs("dotProd", V1);
-		  chkargs("dotProd", V2);
-		  int len1 = V1.length;
-		  int len2 = V2.length;
-		  Double[] result = null;
-		  
-		  // NOTE: These should be the same length		  
-		  if ( len1 != len2 ) throw new Exception("vectors are not the same length");
-		  
-		  // if get here, assume they're the same length
-		  result = new Double[len1];		  
-		  for (int i=0; i < len1; i++) {
-			  result[i] = V1[i] * V2[i];
-		  }		  
-		  
-		  chkresult("dotProd", result);
-		  
-		  return result;
-	  }
-	  
-	  
-	  public Integer div( Integer a, Integer b ) throws Exception {
-		  chkargs("div", a);
-		  chkargs("div", b);
-		  
-		  if ( b == 0 )
-			  throw new SingularityTreatmentException("divide by zero during vector divide operation");
-		  Integer result = a / b;
-		  
-		  chkresult("div", result);
-		  
-		  return result;		  
-	  }
-	  
-		public Integer[] vectorize( Integer[][] A ) throws Exception {
-			
-			chkargs("vectorize",A);
-			
-			int len1 = A.length;
-			int len2 = A[0].length;
-			int len3 = len1*len2;
-			Integer[] C = new Integer[len1*len2];
-			for (int i=0; i < len1; i++) {
-			  for (int j=0; j < len2; j++) {
-				C[(i*len2)+j] = A[i][j];
-			  }
-			}
-			
-			chkresult("vectorize",C);
-			
-			return C;
-		}	  
-	  
-	  public Integer[] getRowCounts( Integer[][] M ) throws Exception {
-		  
-		  chkargs("getRowCounts", M);
-		  
-		  int rows = M.length;
-		  Integer[] rowCounts = new Integer[rows];		  
-		  for (int i=0; i < rows; i++) {
-			  rowCounts[i] = sum( getRow(M,i) );
-		  }
-		  
-		  chkresult("getRowCounts", rowCounts );
-		  
-		  return rowCounts;
-	  }
-	  
-	  public Double[] getRowCounts( Double[][] M ) throws Exception {
-		  
-		  chkargs("getRowCounts", M);
-		  
-		  int rows = M.length;
-		  Double[] rowCounts = new Double[rows];		  
-		  for (int i=0; i < rows; i++) {
-			  rowCounts[i] = sum( getRow(M,i) );
-		  }		  
-		  
-		  chkresult("getRowCounts", rowCounts);
-		  
-		  return rowCounts;
-	  }	  
-	  
-	  public Integer[] getRow( Integer[][] M, Integer row ) throws Exception {
-		  
-		  chkargs("getRow", M);
-		  chkargs("getRow", row);
-		  
-		  Integer[] result = null;
-		  
-		  if ( row >=0 && row < M.length )
-			  result = M[row];
-		  
-		  chkresult("getRow", result);
-		  
-		  return result;
-	  }
-	  
-	  public Double[] getRow( Double[][] M, Integer row ) throws Exception {
-		  
-		  chkargs("getRow", M);
-		  chkargs("getRow", row);
-		  Double[] result = null;
-		  if ( row >=0 && row < M.length )
-			  result = M[row];
-
-		  chkresult("getRow", result);
-		  
-		  return result;
-	  }	  
-	  
-	  
-	  public Integer[] getColCounts( Integer[][] M ) throws Exception {
-		  
-		  chkargs("getColCounts", M);
-		  
-		  int cols = M[0].length;
-		  Integer[] colCounts = new Integer[cols];		  
-		  for (int i=0; i < cols; i++) {			  
-			  colCounts[i] = sum( getCol(M,i) );
-		  }		  
-		  
-		  chkresult("getColCounts", colCounts);
-		  
-		  return colCounts;
-	  }
-	  
-	  public Double[] getColCounts( Double[][] M ) throws Exception {
-		  
-		  chkargs("getColCounts", M);
-		  
-		  int cols = M[0].length;
-		  Double[] colCounts = new Double[cols];		  
-		  for (int i=0; i < cols; i++) {			  
-			  colCounts[i] = sum( getCol(M,i) );
-		  }
-		  
-		  chkresult("getColCounts", colCounts);
-		  
-		  return colCounts;
-	  }
-	  
-	  public Integer[] getCol( Integer[][] M, Integer col ) throws Exception {
-		  
-		  chkargs("getCol", M);
-		  chkargs("getCol", col);
-		  
-		  Integer[] result = null;
-		  
-		  if ( col >=0 && col < M[0].length ) {
-			  
-			  int rows = M.length;
-			  Integer[] column = new Integer[rows];
-			  for (int i=0; i < rows; i++) {
-				  column[i] = M[i][col];
-			  }			  
-			  result = column;
-		  }
-		  
-		  chkresult("getCol", result);
-		  
-		  return result;
-
-	  }	  
-
-	  public Double[] getCol( Double[][] M, Integer col ) throws Exception {
-		  
-		  chkargs("getCol", M);
-		  chkargs("getCol", col);
-
-		  Double[] result = null;
-		  
-		  if ( col >=0 && col < M[0].length ) {
-			  
-			  int rows = M.length;
-			  Double[] column = new Double[rows];
-			  for (int i=0; i < rows; i++) {
-				  column[i] = M[i][col];
-			  }			  
-			  result = column;
-		  }
-		 
-		  chkresult("getCol", result);
-		  
-		  return result;
-	  }	  
-	  
-	  
-	  public Integer sum( Integer[] V ) throws Exception {
-		  
-		  chkargs("sum", V);
-		  
-		  int len = V.length;
-		  Integer sum = 0;
-		  for (int i=0; i < len; i++) {
-			  sum += V[i];
-		  }
-		  
-		  chkresult("sum", sum);
-		  return sum;
-	  }
-	  
+	  	  
 		public Double[] img2ArrayColumnMajor( ImageData im ) throws Exception {
 			chkargs("img2ArrayColumnMajor", im);
 			double[][][] A = im.getValues();
 			int row_len = A.length;
 			int col_len = A[0].length;
 			int band_len = A[0][0].length;
+			//System.out.println("(row,col,band,total)=("+row_len+","+col_len+","+band_len+","+"total=" + (row_len*col_len*band_len));
 			Double[][][] B = new Double[row_len][col_len][band_len];
 			for (int i=0; i < col_len; i++) {	// to mirror the Matlab reference implementation, walk columns first, then rows
 				for (int j=0; j < row_len; j++) {
@@ -2151,38 +1890,6 @@ public class MathOpsE
 			return C;
 		}	  
 	  
-	  public Double[] uniqueValues( Double[] imgPixels ) throws Exception {
-		  
-		  chkargs("uniqueValues", imgPixels);
-		  
-		  Double[] unique = null;
-		  LinkedHashMap map = new LinkedHashMap();
-		  
-		  int len = imgPixels.length;
-		  double pixelValue = 0.0d; 
-		  for (int i=0; i < len; i++) {
-			  pixelValue = imgPixels[i];
-			  if ( !map.containsKey( pixelValue ) ) {
-				  map.put(pixelValue, pixelValue);
-			  }
-		  }
-		  
-		  // sort unique map here
-		  Object[] sorted = new TreeSet( map.values() ).toArray();
-		  
-		  int len2 = sorted.length;
-		  unique = new Double[len2];
-		  
-		  // convert back to doubles
-		  for (int i=0; i < len2; i++) {
-			  unique[i] = (Double) sorted[i];
-		  }
-	
-		  chkresult("uniqueValues", unique);
-		  
-		  return unique;
-	  }
-
 
 		/*
 		 *  name:			Rand Index : (RI)
@@ -2191,7 +1898,7 @@ public class MathOpsE
 		 *	description:	Takes 2 representations of image pixel data as input and generates a single numerical output.
 		 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 		 *  
-		 *  @author 		Benjamin Long, blong@nist.gov
+		 *  @author 		B. Long
 		 *  version:		1.0
 		 */	
 	  
@@ -2258,7 +1965,7 @@ public class MathOpsE
 		 *	description:	Takes 2 representations of image pixel data as input and generates a single numerical output.
 		 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 		 *  
-		 *  @author 		Benjamin Long, blong@nist.gov
+		 *  @author 		B. Long
 		 *  version:		1.0
 		 */	
 	  
@@ -2291,39 +1998,7 @@ public class MathOpsE
 	        
 	        return dice;
 	  }	 
-	  
-	  public void show( String name, Double[] V ) throws Exception
-	  {
-		  int len = V.length;
-		  String s = name + ": ";
-		  for (int i=0; i < len; i++ ) {
-			  if ( i!=0 ) s+= ", ";
-			  s += V[i];
-		  }
-		  System.out.println(s);
-	  }
-	  
-	  public void show( String name, Double d ) throws Exception
-	  {
-		  String s = name + ": " + d;
-		  System.out.println(s);
-	  }	  
-	  
-	  public Double[] mult( Double num, Double[] V ) throws Exception {
-		  
-		  chkargs("mult", V);
-		  
-		  int len = V.length;
-		  Double[] product = new Double[len];
-		  for (int i=0; i < len; i++) {
-			  product[i] = mult(V[i],num);
-		  }
-		  
-		  chkresult("mult", product);
-		  
-		  return product;
-	  }
-	  
+	  	  
 		/*
 		 *  name:			Jaccard
 		 *  @see 			TBD.
@@ -2331,7 +2006,7 @@ public class MathOpsE
 		 *	description:	Takes 2 representations of image pixel data as input and generates a single numerical output.
 		 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 		 *  
-		 *  @author 		Benjamin Long, blong@nist.gov
+		 *  @author 		B. Long
 		 *  version:		1.0
 		 */	
 	  
@@ -2360,54 +2035,7 @@ public class MathOpsE
 	        return jaccard;
 	  }	 	  
 	  
-	  /*
-	   * PixelValueRelation (pvrel): greater than (GT) given pixel value.
-	   */
-	  public Double[] pvrel_greaterThan( Double[] img, Double pixelValue ) throws Exception {
-		  
-		  chkargs("pvrel_greaterThan", img);
-		  chkargs("pvrel_greaterThan", pixelValue);
-		  
-		  int len = img.length;
-		  Double[] result = new Double[len];
-		  for (int i=0; i < len; i++) {
-			  if ( img[i] > pixelValue ) {
-				  result[i] = 1.0d;
-			  }
-			  else {
-				  result[i] = 0.0d;
-			  }
-		  }
-		  
-		  chkresult("pvrel_greaterThan", result);
-		  
-		  return result;
-	  }
 	  
-	  /*
-	   * PixelValueRelation (pvrel): equalTo given pixel value.
-	   */
-	  public Double[] pvrel_equalTo( Double[] img, Double pixelValue ) throws Exception {
-		  
-		  
-		  chkargs("pvrel_equalTo", img);
-		  chkargs("pvrel_equalTo", pixelValue);
-		  
-		  int len = img.length;
-		  Double[] result = new Double[len];
-		  for (int i=0; i < len; i++) {
-			  if ( img[i].equals( pixelValue ) ) {
-				  result[i] = 1.0d;
-			  }
-			  else {
-				  result[i] = 0.0d;
-			  }
-		  }
-		  
-		  chkresult("pvrel_equalTo", result);
-		  
-		  return result;
-	  }	  
 	  
 		/*
 		 *  name:			Total Error Rate Evaluation Measure (TEE)
@@ -2416,7 +2044,7 @@ public class MathOpsE
 		 *	description:	Takes 2 representations of image pixel data as input and generates a single numerical output.
 		 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 		 *  
-		 *  @author 		Benjamin Long, blong@nist.gov
+		 *  @author 		B. Long
 		 *  version:		1.0
 		 */		
 		 
@@ -2490,7 +2118,7 @@ public class MathOpsE
 		 *	description:	Takes 2 representations of image pixel data as input and generates a single numerical output.
 		 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
 		 *  
-		 *  @author 		Benjamin Long, blong@nist.gov
+		 *  @author 		B. Long
 		 *  version:		1.0
 		 */	    
 		 
@@ -2574,10 +2202,15 @@ public class MathOpsE
 	}
 	
 	public Double sum(Double[] a) throws Exception {
-      	chkargs("sum",a);
+//      	chkargs("sum",a);
 		int len = a.length;
 		Double b = 0d;
-		for (int i=0; i < len; i++) b = add(a[i], b);
+		
+		for (int i=0; i < len; i++) {
+			if (a[i] >= Double.MAX_VALUE)			// DN/PNB updates to deal with data that could overflow computationn
+				return Double.MAX_VALUE;
+			b = add(a[i], b); 
+		}
       	chkresult("sum",b);
 		return b;
 	}	
@@ -2609,7 +2242,7 @@ public class MathOpsE
       	chkargs("mult",a,b);
 		int len = a.length;
 		Double[] c = new Double[len];
-		for (int i=0; i < len; i++) c[i] = mult(a[i], b[i]);
+		for (int i=0; i < len; i++)	c[i] = mult(a[i], b[i]);
       	chkresult("mult",c);
 		return c;
 	}
@@ -2617,8 +2250,9 @@ public class MathOpsE
 	public Double mult(Double[] a) throws Exception {
       	chkargs("mult",a);
 		int len = a.length;
-		Double b = 0d;
-		for (int i=0; i < len; i++) b = mult(a[i], b);
+		Double b = 1d;
+		for (int i=0; i < len; i++) b = mult(a[i], b);	
+
       	chkresult("mult",b);
 		return b;
 	}			
@@ -2629,19 +2263,14 @@ public class MathOpsE
 		Double c = 0.0d;
 		
 		// Per guidance from the survey paper, if we receive 0/0, return 0. If x/0, a small value.
+		if ( Math.abs(a) <= Double.MIN_VALUE && Math.abs(b) <= Double.MIN_VALUE)	 {  // 0/0
+			return 0d;	
+		}
+		else if ( Math.abs(a) > Double.MIN_VALUE  && Math.abs(b) <= Double.MIN_VALUE  ) { // x/0
+			return Double.MAX_VALUE; // dealing with divisions of/near zero => mathematically yield INFINITY. => DN/PNB updated for MAX instead.
+		}
 		
-		if ( a.equals(0d) && b.equals(0d) )	 {  // 0/0
-			c = 0d;	
-		}
-		else if ( !a.equals(0d) && b.equals(0d) ) { // x/0
-			// c = Double.MIN_VALUE;	
-			b = Double.MIN_VALUE; // NOTE: The author must have meant to replace a div/0 by a div/small-number b/c to replace divZ==Infinity with Small-number makes no sense.	
-				// NOTE: Alternatively, one could also replace c with a MAX_VALUE
-			
-		}
-
 		c =  a / b;		
-	
       	chkresult("div",c);
 		return c;
 	}
@@ -2690,8 +2319,9 @@ public class MathOpsE
 	public Double max(Double[] a) throws Exception {
       	chkargs("max",a);
 		int len = a.length;
-		Double b = 0d;
-		for (int i=0; i < len-1; i++) b = max(a[i], a[i+1]);
+		if ( len==0 ) return 0d;
+		Double b = a[0];
+		for (int i=0; i < len; i++) b = max(a[i], b);
       	chkresult("max",b);
 		return b;
 	}								
@@ -2715,8 +2345,9 @@ public class MathOpsE
 	public Double min(Double[] a) throws Exception {
       	chkargs("min",a);
 		int len = a.length;
-		Double b = 0d;
-		for (int i=0; i < len-1; i++) b = min(a[i], a[i+1]);
+		if ( len==0 ) return 0d;
+		Double b = a[0];
+		for (int i=0; i < len; i++) b = min(a[i], b);
       	chkresult("min",b);
 		return b;
 	}							
@@ -2725,14 +2356,11 @@ public class MathOpsE
 	{
       	chkargs("ln",a);
 		Double b = 0.0d;
-		if (a.equals(0d)) {
-			//b =  Double.MIN_VALUE;
-			a =  Double.MIN_VALUE;	// Per guidance from survey paper, if we receive log 0, return a vewy small value.
-					// NOTE: The author must have meant to replace the input argument by a small-number, rather than the result, although this was unclearly stated.
-		}
 
-		b = Math.log(a);
-		
+			// NOTE: let case: log 0 be handled by exception-handler of chkresult
+			
+		b = Math.log(a); // compute log
+
       	chkresult("ln",b);
 		return b;
 	}
@@ -2745,6 +2373,37 @@ public class MathOpsE
       	chkresult("ln",b);
 		return b;
 	}							
+
+	// DN/PNB - introduce method for case: (a log b) => also checks-for/handles case: (0 log 0)	
+	public Double a_Ln_b(Double a1, Double a2) throws Exception 
+	{
+		if(Math.abs(a1) <= Double.MIN_VALUE && Math.abs(a2) <= Double.MIN_VALUE)
+			return 0.0;
+		if(Math.abs(a1) > Double.MIN_VALUE && Math.abs(a2) <= Double.MIN_VALUE)
+			return (-Double.MAX_VALUE);
+		
+		if (a1 >= Double.MAX_VALUE || a2 >= Double.MAX_VALUE)
+			return  Double.MAX_VALUE;
+		
+//      	chkargs("a_Ln_b",a2);
+		Double b = 0.0d;
+		b = a1 * ln(a2);
+		if (b == Double.POSITIVE_INFINITY){
+			//System.out.println("A1: " + a1 + " A2: " + a2);
+		}
+      	chkresult("a_Ln_b",b);
+		return b;
+	}
+	
+	public Double[] a_Ln_b(Double[] a1, Double[] a2 ) throws Exception {
+
+		int len = a1.length;
+		Double[] b = new Double[len];
+		for (int i=0; i < len; i++) b[i] = a_Ln_b(a1[i], a2[i]);
+      	chkresult("a_Ln_b",b);
+		return b;
+	}	
+	
 	
 	public Double abs(Double a) throws Exception {
       	chkargs("abs",a);
@@ -2761,23 +2420,30 @@ public class MathOpsE
       	chkresult("abs",b);
 		return b;
 	}								
+
 	
-	public Double root(Double a) throws Exception {
-      	chkargs("root",a);
-		Double b = pow(a, reciprocal1(a));
-      	chkresult("root",a);
-		return b;
-	}
+	// NOTE1: unused methods commented for now
+	// NOTE2: When/if DO need to use these, can use them for any root: sqrt, cubed-root (cbrt), etc.
 	
-	public Double[] root(Double[] a) throws Exception {
-      	chkargs("root",a);
-		int len = a.length;
-		Double[] b = new Double[len];
-		for (int i=0; i < len; i++) b[i] = root(a[i]);
-      	chkresult("root",b);
-		return b;
-	}								
-	
+		/*	public Double root(Double a, b) throws Exception {
+			chkargs("root",a);
+			chkargs("root",b);
+				Double c = pow(a, reciprocal1(b));
+			chkresult("root",c);
+				return c;
+			}
+			
+			public Double[] root(Double[] a, Double[] b) throws Exception {
+			chkargs("root",a);
+			chkargs("root",b);
+				int len = a.length;
+				Double[] c = new Double[len];
+				for (int i=0; i < len; i++) c[i] = root(a[i], b[i]);
+			chkresult("root",c);
+				return c;
+			}	
+		*/							
+			
 	public Double square(Double a) throws Exception {
       	chkargs("square",a);
 		Double b = a * a;	
@@ -2805,10 +2471,42 @@ public class MathOpsE
       	chkargs("sqrt",a);
 		int len = a.length;
 		Double[] b = new Double[len];
-		for (int i=0; i < len; i++) b[i] = sqrt(a[i]);
+		for (int i=0; i < len; i++)	b[i] = sqrt(a[i]);
       	chkresult("sqrt",b);
 		return b;
-	}									
+	}
+	
+	public Double cube(Double a) throws Exception {
+      	chkargs("cube",a);
+		Double b = a * a * a;	
+      	chkresult("cube",b);
+		return b;
+	}
+	
+	public Double[] cube(Double[] a) throws Exception {
+      	chkargs("cube",a);
+		int len = a.length;
+		Double[] b = new Double[len];
+		for (int i=0; i < len; i++) b[i] = cube(a[i]);
+      	chkresult("cube",b);
+		return b;
+	}
+	
+	public Double cbrt(Double a) throws Exception {
+      	chkargs("cbrt",a);
+		Double b = Math.cbrt(a);
+      	chkresult("cbrt",b);
+		return b;
+	}
+	
+	public Double[] cbrt(Double[] a) throws Exception {
+      	chkargs("cbrt",a);
+		int len = a.length;
+		Double[] b = new Double[len];
+		for (int i=0; i < len; i++) b[i] = cbrt(a[i]);
+      	chkresult("cbrt",b);
+		return b;
+	}
 			
 	public Double reciprocal1(Double a) throws Exception {
       	chkargs("reciprocal1",a);
@@ -2833,7 +2531,7 @@ public class MathOpsE
   	/*
 	 *  Support method for metric implementations  
 	 *  description: 	creates an array of a specific size, all having the same value (used in calculations).
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */		      	   
   public Double[] mkConstArray(Integer len, Double value) throws Exception 
@@ -2854,7 +2552,7 @@ public class MathOpsE
 	/*
 	 *  Support method for metric implementations
 	 *  description: 	Converts the content of an RGB histogram to the form used by the metric algorithms.
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */	
   
@@ -2881,7 +2579,7 @@ public class MathOpsE
 	/*
 	 *  Support method for metric implementations  
 	 *  description: 	Converts the content of a gray-scale histogram to the form used by the metric algorithms.
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */	 
 
@@ -2905,7 +2603,7 @@ public class MathOpsE
 	/*
 	 *  Support method for metric implementations  
 	 *  description: 	Normalizes a raw histogram to relative frequencies. (Where the histogram was received from an RGB or gray-scale histogram feature.)
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */		 
 
@@ -2933,7 +2631,7 @@ public class MathOpsE
 	/*
 	 *  Support method for metric implementations  
 	 *  description: 	Normalizes an RGB histogram to relative frequencies.
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */		      
 
@@ -2950,7 +2648,7 @@ public class MathOpsE
 	/*
 	 *  Support method for metric implementations  
 	 *  description: 	Normalizes a gray-scale histogram to relative frequencies.
-	 *  @author 		Benjamin Long, blong@nist.gov
+	 *  @author 		B. Long
 	 *  version:		1.0
 	 */		      	 
 
@@ -2962,8 +2660,8 @@ public class MathOpsE
 	        chkresult("normalizeGrayscaleHistogram",h);
 	        return h;         
 	  } 
-	  
-  
+
+	
 //////////////////////////////////////////////////////////////////////////////////
 // Error checks
 //////////////////////////////////////////////////////////////////////////////////
@@ -3163,10 +2861,1017 @@ public class MathOpsE
   public boolean chkresult( String methodName, Integer[][][] a ) throws Exception {
 	return chkargs(methodName,a);  
   }   
+ 
+	
+	public Double[] img2Array( ImageData im ) throws Exception {
+		chkargs("img2Array", im);
+		double[][][] A = im.getValues();
+		int len1 = A.length;
+		int len2 = A[0].length;
+		int len3 = A[0][0].length;
+		Double[][][] B = new Double[len1][len2][len3];
+		for (int i=0; i < len1; i++) {
+			for (int j=0; j < len2; j++) {
+				for (int k=0; k < len3; k++) {
+					B[i][j][k] = new Double(A[i][j][k]);
+				}
+			}
+		}
+		Double[] C = vectorize(B);
+		chkresult("img2Array",C);
+		return C;
+	}
+	
+	public ImageData array2Img( Double[] A, Integer rows, Integer cols, Integer bands ) throws Exception {
+		chkargs("array2Img",A);
+		chkargs("array2Img",rows);
+		chkargs("array2Img",cols);
+		chkargs("array2Img",bands);
+		ImageData im = null;
+		double[][][] B = new double[rows][cols][bands];
+		int len1 = rows;
+		int len2 = cols;
+		int len3 = bands;
+		for (int i=0; i < len1; i++) {
+			for (int j=0; j < len2; j++) {
+				for (int k=0; k < len3; k++) {
+					int idx = (i*len2) + (j*len3) + k; 				
+						//System.out.println("(i,j,k,len1,len2,len3,idx)=("+i+","+j+","+k+","+len1+","+len2+","+len3+",B["+i+"]["+j+"]["+k+"]) = A["+idx+"] = " + A[idx] );
+					B[i][j][k] = A[ idx ];
+				}
+			}
+		}
+		im = new ImageData( B );
+		chkresult("array2Img",im);
+		return im;
+	}	
+
+	
+/////////////////////////////////////////////////////
+// - - - - - - - - - - - - - - - - - - - - - - - - -
+/////////////////////////////////////////////////////
+	
+	  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////    
+	  // -----------------------------------------
+	  // Labeled/Geometric/Structural Metrics
+	  // -----------------------------------------
+
+		/*
+		 *  name:			Adjusted Rand Index : (ARI)
+		 *  @see 			TBD.
+		 *
+		 *	description:	Takes 2 representations of image pixel data as input and generates a single numerical output.
+		 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
+		 *  
+		 *  @author 		B. Long
+		 *  version:		1.0
+		 */	
+
+	  // assumes we have converted from voxels to 1D arrays here.
+	  public Double pixel_measure_ari_nD(Double[] im1, Double[] im2) throws Exception {
+		  
+			chkargs("pixel_measure_ari",im1,im2);	
+	        Double ari     = 0.0d;
+	        Double ri     = 0.0d;
+
+		     // We've assumed that images are identical in size at the application level.
+		     // Ergo,
+	        int imgSize = im1.length;
+     
+	        Double[] im1PVS = uniqueValues(im1);	// unique pixelValueSpace for each image, respectively
+	        Double[] im2PVS = uniqueValues(im2);
+	        int im1LargestPV = im1PVS[ im1PVS.length - 1 ].intValue();	// get largest pixelValue from each pixelValueSpace
+	        int im2LargestPV = im2PVS[ im2PVS.length - 1 ].intValue();	
+	        
+	        im1PVS = null;
+	        im2PVS = null;
+     
+	        double[][] commonPixels = new double[im1LargestPV+1][im2LargestPV+1];	// for counting total pixel overlaps in the two images
+	        	// NOTE: We add 1 to each pixelValue dimension b/c when a given pixelValue, like 255, is indexed, it goes to
+	        	//	     index-location 255, which works if we allocated 256 pixelLocations in which to index/count.
+	        
+	        int im1Idx = 0;	// respective indices in commonPixel tracking matrix
+	        int im2Idx = 0;
+   
+	        for (int i=0; i < imgSize; i++) {
+	        	im1Idx = im1[i].intValue();		// get pixel index values into the commonPixels pixelValueCoordinateSpace
+	        	im2Idx = im2[i].intValue();	        	
+	        	commonPixels[im1Idx][im2Idx]++;	// increment relative pixel values at (im1Px, im2Px) location
+	        }
+	        im1 = null;
+	        im2 = null;
+     
+	        double[] A = getRowCounts( commonPixels );	// get row counts
+	        double[] B = getColCounts( commonPixels ); // get column counts
+      
+	        // linearize commonPixels space and get its sum
+	        double[] linearized_commonPixels = vectorize(commonPixels);	 
+	        
+	        commonPixels = null;
+	        
+	        Double N = sum( linearized_commonPixels );	        
+	        // perform (N*(N-1)/2) over entire commonPixels space and other counts
+	        Double Nij = gaussSum( linearized_commonPixels );
+	        
+	        linearized_commonPixels = null;
+	        
+	        Double A2  = gaussSum( A );
+	        Double B2  = gaussSum( B );
+		    Double N2  = gaussSum( N );		    
+		    Double ARI = ( Nij - ((A2*B2)/N2) ) / ( (0.5 * (A2+B2)) - ((A2*B2)/N2) );
+		    Double  RI = 1 + (((2*Nij) - A2 - B2) / N2) ;	 
+		    
+		    chkresult("pixel_measure_ari",ARI);
+		   
+		    _ARI=ARI;
+		    _RI = RI;
+		    
+		  return ARI;
+	  }
+	  
+	  /*
+	   * Perform equivalent of Gauss's Sum (N*(N-1))/2 for a vector of integer values.
+	   */
+	  public Integer gaussSum( Integer[] V ) throws Exception {
+		  
+		  chkargs("gaussSum",V);
+		  int len1 = V.length;
+		  Integer[] V2sub1 = sub(V, 1);					// subtract 1 from vector elements
+		  Integer[] mulResult = dotProd(V, V2sub1);		// multiply them
+		  Integer sum = sum(mulResult);
+		  Integer div = div( sum, 2);
+		  chkresult("gaussSum",div);
+		  
+		  return div;
+	  }
+
+	  public Double gaussSum( Double [] V ) throws Exception {
+		  chkargs("gaussSum",V);
+		  int len1 = V.length;
+		  Double[] V2sub1 = sub(V, 1.0d);					// subtract 1 from vector elements
+		  Double[] mulResult = dotProd(V, V2sub1);		// multiply them
+		  Double sum = sum(mulResult);
+		  Double result = div( sum, 2.0d);
+		  chkresult("gaussSum",result);
+		  return result;
+	  }	  
+	  
+	  public double gaussSum( double [] V ) throws Exception {
+		  chkargs("gaussSum",V);
+		  int len1 = V.length;
+		  double[] V2sub1 = sub(V, 1.0d);					// subtract 1 from vector elements
+		  double[] mulResult = dotProd(V, V2sub1);		// multiply them
+		  double sum = sum(mulResult);
+		  double result = div( sum, 2.0d);
+		  chkresult("gaussSum",result);
+		  return result;
+	  }		  
+	  
+	  public int gaussSum( Integer N ) throws Exception {
+		  chkargs("gaussSum",N);
+		  Integer result = (N*(N-1)) / 2; // BJL: BUGFIX - should be n(n+1)/2 for true gaussSum; however, only RI/ARI use this, and the correct computation for RI/ARI is n(n-1)/2. So, despite this misnomer, RI/ARI were being calculated correctly.
+		  chkresult("gaussSum", result);
+		  return result;
+	  }
+	  
+	  public Double gaussSum( Double N ) throws Exception {
+		  chkargs("gaussSum",N);
+		  Double result = (N*(N-1)) / 2;  // BJL: BUGFIX - should be n(n+1)/2 for true gaussSum; however, only RI/ARI use this, and the correct computation for RI/ARI is n(n-1)/2. So, despite this misnomer, RI/ARI were being calculated correctly.
+		  chkresult("gaussSum", result);
+		  return result;		  
+	  }	  
+	  
+	  
+	  public Integer[] sub( Integer[] V, Integer num ) throws Exception {
+		  chkargs("sub", V);
+		  chkargs("sub", num);
+		  int len = V.length;
+		  Integer[] V2 = new Integer[len];
+		  for (int i=0; i < len; i++) {
+			  V2[i] = V[i] - num;
+		  }
+		  chkresult("sub", V2);
+		  return V2;
+	  }
+	  
+	  public Double[] sub( Double[] V, Double num ) throws Exception {
+		  chkargs("sub", V);
+		  chkargs("sub", num);
+		  int len = V.length;
+		  Double[] V2 = new Double[len];
+		  for (int i=0; i < len; i++) {
+			  V2[i] = V[i] - num;
+		  }
+		  chkresult("sub", V2);
+		  return V2;
+	  }	  
+	  
+	  public double[] sub( double[] V, double num ) throws Exception {
+		  chkargs("sub", V);
+		  chkargs("sub", num);
+		  int len = V.length;
+		  double[] V2 = new double[len];
+		  for (int i=0; i < len; i++) {
+			  V2[i] = V[i] - num;
+		  }
+		  chkresult("sub", V2);
+		  return V2;
+	  }	  	  
+	  
+	  public Integer[] dotProd( Integer[] V1, Integer[] V2 ) throws Exception {
+		  chkargs("dotProd", V1);
+		  chkargs("dotProd", V2);
+		  int len1 = V1.length;
+		  int len2 = V2.length;
+		  Integer[] result = null;
+		  
+		  // NOTE: These should be the same length		  
+		  if ( len1 != len2 ) throw new Exception("vectors are not the same length");
+		  
+		  // if get here, assume they're the same length
+		  result = new Integer[len1];		  
+		  for (int i=0; i < len1; i++) {
+			  result[i] = V1[i] * V2[i];
+		  }
+		  
+		  chkresult("dotProd", result);
+		  
+		  return result;
+	  }
+	  
+	  public Double[] dotProd( Double[] V1, Double[] V2 ) throws Exception {
+		  chkargs("dotProd", V1);
+		  chkargs("dotProd", V2);
+		  int len1 = V1.length;
+		  int len2 = V2.length;
+		  Double[] result = null;
+		  
+		  // NOTE: These should be the same length		  
+		  if ( len1 != len2 ) throw new Exception("vectors are not the same length");
+		  
+		  // if get here, assume they're the same length
+		  result = new Double[len1];		  
+		  for (int i=0; i < len1; i++) {
+			  result[i] = V1[i] * V2[i];
+		  }		  
+		  
+		  chkresult("dotProd", result);
+		  
+		  return result;
+	  }
+	  
+	  public double[] dotProd( double[] V1, double[] V2 ) throws Exception {
+		  chkargs("dotProd", V1);
+		  chkargs("dotProd", V2);
+		  int len1 = V1.length;
+		  int len2 = V2.length;
+		  double[] result = null;
+		  
+		  // NOTE: These should be the same length		  
+		  if ( len1 != len2 ) throw new Exception("vectors are not the same length");
+		  
+		  // if get here, assume they're the same length
+		  result = new double[len1];		  
+		  for (int i=0; i < len1; i++) {
+			  result[i] = V1[i] * V2[i];
+		  }		  
+		  
+		  chkresult("dotProd", result);
+		  
+		  return result;
+	  }	  
+	  
+	  
+	  public Integer div( Integer a, Integer b ) throws Exception {
+		  chkargs("div", a);
+		  chkargs("div", b);
+		  
+		  if ( b == 0 )
+			  throw new SingularityTreatmentException("divide by zero during vector divide operation");
+		  Integer result = a / b;
+		  
+		  chkresult("div", result);
+		  
+		  return result;		  
+	  }
+	  
+		public Integer[] vectorize( Integer[][] A ) throws Exception {
+			
+			chkargs("vectorize",A);
+			
+			int len1 = A.length;
+			int len2 = A[0].length;
+			int len3 = len1*len2;
+			Integer[] C = new Integer[len1*len2];
+			for (int i=0; i < len1; i++) {
+			  for (int j=0; j < len2; j++) {
+				C[(i*len2)+j] = A[i][j];
+			  }
+			}
+			
+			chkresult("vectorize",C);
+			
+			return C;
+		}	  
+	  
+	  public Integer[] getRowCounts( Integer[][] M ) throws Exception {
+		  
+		  chkargs("getRowCounts", M);
+		  
+		  int rows = M.length;
+		  Integer[] rowCounts = new Integer[rows];		  
+		  for (int i=0; i < rows; i++) {
+			  rowCounts[i] = sum( getRow(M,i) );
+		  }
+		  
+		  chkresult("getRowCounts", rowCounts );
+		  
+		  return rowCounts;
+	  }
+	  
+	  public double[] getRowCounts( double[][] M ) throws Exception {
+		  
+		  chkargs("getRowCounts", M);
+		  
+		  int rows = M.length;
+		  double[] rowCounts = new double[rows];		  
+		  for (int i=0; i < rows; i++) {
+			  rowCounts[i] = sum( getRow(M,i) );
+		  }		  
+		  
+		  chkresult("getRowCounts", rowCounts);
+		  
+		  return rowCounts;
+	  }		  
+	  
+	  public Double[] getRowCounts( Double[][] M ) throws Exception {
+		  
+		  chkargs("getRowCounts", M);
+		  
+		  int rows = M.length;
+		  Double[] rowCounts = new Double[rows];		  
+		  for (int i=0; i < rows; i++) {
+			  rowCounts[i] = sum( getRow(M,i) );
+		  }		  
+		  
+		  chkresult("getRowCounts", rowCounts);
+		  
+		  return rowCounts;
+	  }	  
+	  
+	  public Integer[] getRow( Integer[][] M, Integer row ) throws Exception {
+		  
+		  chkargs("getRow", M);
+		  chkargs("getRow", row);
+		  
+		  Integer[] result = null;
+		  
+		  if ( row >=0 && row < M.length )
+			  result = M[row];
+		  
+		  chkresult("getRow", result);
+		  
+		  return result;
+	  }
+	  
+	  public double[] getRow( double[][] M, int row ) throws Exception {
+		  
+		  chkargs("getRow", M);
+		  chkargs("getRow", row);
+		  double[] result = null;
+		  if ( row >=0 && row < M.length )
+			  result = M[row];
+
+		  chkresult("getRow", result);
+		  
+		  return result;
+	  }		  
+	  
+	  public Double[] getRow( Double[][] M, Integer row ) throws Exception {
+		  
+		  chkargs("getRow", M);
+		  chkargs("getRow", row);
+		  Double[] result = null;
+		  if ( row >=0 && row < M.length )
+			  result = M[row];
+
+		  chkresult("getRow", result);
+		  
+		  return result;
+	  }	  
+	  
+	  
+	  public Integer[] getColCounts( Integer[][] M ) throws Exception {
+		  
+		  chkargs("getColCounts", M);
+		  
+		  int cols = M[0].length;
+		  Integer[] colCounts = new Integer[cols];		  
+		  for (int i=0; i < cols; i++) {			  
+			  colCounts[i] = sum( getCol(M,i) );
+		  }		  
+		  
+		  chkresult("getColCounts", colCounts);
+		  
+		  return colCounts;
+	  }
+	  
+	  public double[] getColCounts( double[][] M ) throws Exception {
+		  
+		  chkargs("getColCounts", M);
+		  
+		  int cols = M[0].length;
+		  double[] colCounts = new double[cols];		  
+		  for (int i=0; i < cols; i++) {			  
+			  colCounts[i] = sum( getCol(M,i) );
+		  }
+		  
+		  chkresult("getColCounts", colCounts);
+		  
+		  return colCounts;
+	  }
+	  
+	  public Double[] getColCounts( Double[][] M ) throws Exception {
+		  
+		  chkargs("getColCounts", M);
+		  
+		  int cols = M[0].length;
+		  Double[] colCounts = new Double[cols];		  
+		  for (int i=0; i < cols; i++) {			  
+			  colCounts[i] = sum( getCol(M,i) );
+		  }
+		  
+		  chkresult("getColCounts", colCounts);
+		  
+		  return colCounts;
+	  }
+
+	  public Integer[] getCol( Integer[][] M, Integer col ) throws Exception {
+		  
+		  chkargs("getCol", M);
+		  chkargs("getCol", col);
+		  
+		  Integer[] result = null;
+		  
+		  if ( col >=0 && col < M[0].length ) {
+			  
+			  int rows = M.length;
+			  Integer[] column = new Integer[rows];
+			  for (int i=0; i < rows; i++) {
+				  column[i] = M[i][col];
+			  }			  
+			  result = column;
+		  }
+		  
+		  chkresult("getCol", result);
+		  
+		  return result;
+
+	  }	  
+	  
+	  public double[] getCol( double[][] M, int col ) throws Exception {
+		  
+		  chkargs("getCol", M);
+		  chkargs("getCol", col);
+
+		  double[] result = null;
+		  
+		  if ( col >=0 && col < M[0].length ) {
+			  
+			  int rows = M.length;
+			  double[] column = new double[rows];
+			  for (int i=0; i < rows; i++) {
+				  column[i] = M[i][col];
+			  }			  
+			  result = column;
+		  }
+		 
+		  chkresult("getCol", result);
+		  
+		  return result;
+	  }		  
+
+	  public Double[] getCol( Double[][] M, Integer col ) throws Exception {
+		  
+		  chkargs("getCol", M);
+		  chkargs("getCol", col);
+
+		  Double[] result = null;
+		  
+		  if ( col >=0 && col < M[0].length ) {
+			  
+			  int rows = M.length;
+			  Double[] column = new Double[rows];
+			  for (int i=0; i < rows; i++) {
+				  column[i] = M[i][col];
+			  }			  
+			  result = column;
+		  }
+		 
+		  chkresult("getCol", result);
+		  
+		  return result;
+	  }	  
+	  
+	  
+	  public Integer sum( Integer[] V ) throws Exception {
+		  
+		  chkargs("sum", V);
+		  
+		  int len = V.length;
+		  Integer sum = 0;
+		  for (int i=0; i < len; i++) {
+			  sum += V[i];
+		  }
+		  
+		  chkresult("sum", sum);
+		  return sum;
+	  }
+	  
+	  public Double[] uniqueValues( Double[] imgPixels ) throws Exception {
+		  
+		  chkargs("uniqueValues", imgPixels);
+		  
+		  Double[] unique = null;
+		  LinkedHashMap map = new LinkedHashMap();
+		  
+		  int len = imgPixels.length;
+		  double pixelValue = 0.0d; 
+		  for (int i=0; i < len; i++) {
+			  pixelValue = imgPixels[i];
+			  if ( !map.containsKey( pixelValue ) ) {
+				  map.put(pixelValue, pixelValue);
+			  }
+		  }
+		  
+		  // sort unique map here
+		  Object[] sorted = new TreeSet( map.values() ).toArray();
+		  
+		  int len2 = sorted.length;
+		  unique = new Double[len2];
+		  
+		  // convert back to doubles
+		  for (int i=0; i < len2; i++) {
+			  unique[i] = (Double) sorted[i];
+		  }
+	
+		  chkresult("uniqueValues", unique);
+		  
+		  return unique;
+	  }
+
+
+		/*
+		 *  name:			Rand Index : (RI)
+		 *  @see 			TBD.
+		 *
+		 *	description:	Takes 2 representations of image pixel data as input and generates a single numerical output.
+		 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
+		 *  
+		 *  @author 		B. Long
+		 *  version:		1.0
+		 */	
+	  
+	  
+	  //assumes we're getting our data via voxels->1D-array
+	  public Double pixel_measure_ri_nD(Double[] im1, Double[] im2) throws Exception {
+			chkargs("pixel_measure_ri",im1,im2);	
+	        Double ari     = 0.0d;
+	        Double ri     = 0.0d;
+
+		     // We've assumed that images are identical in size at the application level.
+		     // Ergo,
+	        int imgSize = im1.length;
+     
+	        Double[] im1PVS = uniqueValues(im1);	// unique pixelValueSpace for each image, respectively
+	        Double[] im2PVS = uniqueValues(im2);
+	        int im1LargestPV = im1PVS[ im1PVS.length - 1 ].intValue();	// get largest pixelValue from each pixelValueSpace
+	        int im2LargestPV = im2PVS[ im2PVS.length - 1 ].intValue();	
+     
+	        im1PVS = null;
+	        im2PVS = null;
+	        
+	        double[][] commonPixels = new double[im1LargestPV+1][im2LargestPV+1];	// for counting total pixel overlaps in the two images
+	        	// NOTE: We add 1 to each pixelValue dimension b/c when a given pixelValue, like 255, is indexed, it goes to
+	        	//	     index-location 255, which works if we allocated 256 pixelLocations in which to index/count.
+	        
+	        int im1Idx = 0;	// respective indices in commonPixel tracking matrix
+	        int im2Idx = 0;
+   
+	        for (int i=0; i < imgSize; i++) {
+	        	im1Idx = im1[i].intValue();		// get pixel index values into the commonPixels pixelValueCoordinateSpace
+	        	im2Idx = im2[i].intValue();	        	
+	        	commonPixels[im1Idx][im2Idx]++;	// increment relative pixel values at (im1Px, im2Px) location
+	        }
+     
+	        im1 = null;
+	        im2 = null;
+	        
+	        double[] A = getRowCounts( commonPixels );	// get row counts
+	        double[] B = getColCounts( commonPixels ); // get column counts
+      
+	        // linearize commonPixels space and get its sum
+	        double[] linearized_commonPixels = vectorize(commonPixels);	 
+	        
+	        commonPixels = null;
+	        
+	        Double N = sum( linearized_commonPixels );	        
+	        // perform (N*(N-1)/2) over entire commonPixels space and other counts
+	        Double Nij = gaussSum( linearized_commonPixels );
+	        
+	        linearized_commonPixels = null;
+	        
+	        Double A2  = gaussSum( A );
+	        Double B2  = gaussSum( B );
+		    Double N2  = gaussSum( N );		    
+		    Double ARI = ( Nij - ((A2*B2)/N2) ) / ( (0.5 * (A2+B2)) - ((A2*B2)/N2) );
+		    Double  RI = 1 + (((2*Nij) - A2 - B2) / N2) ;	 
+		    
+		    chkresult("pixel_measure_ri",ARI);
+		    
+		    _ARI=ARI;
+		    _RI = RI;
+		    
+		  return RI;	  
+	}		  
+	  
+		/*
+		 *  name:			Dice
+		 *  @see 			TBD.
+		 *
+		 *	description:	Takes 2 representations of image pixel data as input and generates a single numerical output.
+		 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
+		 *  
+		 *  @author 		B. Long
+		 *  version:		1.0
+		 */	
+	  
+	  
+	  public Double pixel_measure_dice_nD(Double[] im1, Double[] im2) throws Exception {	
+		  
+			chkargs("pixel_measure_dice",im1,im2);	
+
+	        im1 = pvrel_greaterThan(im1, 0.0d);			// transform all input images to binary via pixel-value-relation: pixelValue>0
+	        im2 = pvrel_greaterThan(im2, 0.0d);
+
+	        Double[] I = add(im1,im2);					// add their values together, creating a composite image of their corresponding values
+	        
+	        im1 = null;
+	        im2 = null;
+	        
+	        Double[] overlap = pvrel_equalTo(I, 2.0d);	// transform combined image into binary via pixel-value-relation; pixelValue==2 (i.e., where images had pixelValue==1)\
+	        
+	        // compute common color area bet/w both images
+	        I = pvrel_greaterThan(I, 0.0d);	// transforms back to binary  
+	        Double sum_overlap = sum(overlap);
+	        
+	        overlap = null;
+	        
+	        Double sum_I 	   = sum(I); 
+	        
+	        // use this information to compute dice
+	        Double dice = div( 
+	        				mult(2.0d,sum_overlap), 
+	        			    add(sum_I,sum_overlap) 
+	        			  );
+	        
+	        
+	        chkresult("pixel_measure_dice", dice);
+	        
+	        return dice;
+	  }	 
+	  
+	  public void show( String name, Double[] V ) throws Exception
+	  {
+		  int len = V.length;
+		  String s = name + ": ";
+		  for (int i=0; i < len; i++ ) {
+			  if ( i!=0 ) s+= ", ";
+			  s += V[i];
+		  }
+		  System.out.println(s);
+	  }
+	  
+	  public void show( String name, Double d ) throws Exception
+	  {
+		  String s = name + ": " + d;
+		  System.out.println(s);
+	  }	  
+	  
+	  public Double[] mult( Double num, Double[] V ) throws Exception {
+		  
+		  chkargs("mult", V);
+		  
+		  int len = V.length;
+		  Double[] product = new Double[len];
+		  for (int i=0; i < len; i++) {
+			  product[i] = mult(V[i],num);
+		  }
+		  
+		  chkresult("mult", product);
+		  
+		  return product;
+	  }
+	  
+		/*
+		 *  name:			Jaccard
+		 *  @see 			TBD.
+		 *
+		 *	description:	Takes 2 representations of image pixel data as input and generates a single numerical output.
+		 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
+		 *  
+		 *  @author 		B. Long
+		 *  version:		1.0
+		 */	
+	  
+	  public Double pixel_measure_jaccard_nD(Double[] im1, Double[] im2) throws Exception {
+		  
+			chkargs("pixel_measure_jaccard",im1,im2);	   
+	        
+	        im1 = pvrel_greaterThan(im1, 0.0d);	// transform all input images to binary via pixel-value-relation: pixelValue>0
+	        im2 = pvrel_greaterThan(im2, 0.0d);
+
+	        Double[] I = add(im1,im2);		// add their values together, creating a composite image of their corresponding values
+	        
+	        im1 = null;
+	        im2 = null;
+	        
+	        Double[] overlap = pvrel_equalTo(I, 2.0d);	// transform combined image into binary via pixel-value-relation; pixelValue==2 (i.e., where images had pixelValue==1)\
+	        // compute common color area bet/w both images
+	        I = pvrel_greaterThan(I, 0.0d);	// transforms back to binary  
+	        Double sum_overlap = sum(overlap);
+	        
+	        overlap = null;
+	        
+	        Double sum_I 	   = sum(I); 
+	        
+	        // use this information to compute jaccard	        
+	        Double jaccard = div( sum_overlap,  sum_I );
+	        
+	        chkresult("pixel_measure_jaccard", jaccard );
+	        
+	        return jaccard;
+	  }	 	  	  
+	  
+	  /*
+	   * PixelValueRelation (pvrel): greater than (GT) given pixel value.
+	   */
+	  public Double[] pvrel_greaterThan( Double[] img, Double pixelValue ) throws Exception {
+		  
+		  chkargs("pvrel_greaterThan", img);
+		  chkargs("pvrel_greaterThan", pixelValue);
+		  
+		  int len = img.length;
+		  Double[] result = new Double[len];
+		  for (int i=0; i < len; i++) {
+			  if ( img[i] > pixelValue ) {
+				  result[i] = 1.0d;
+			  }
+			  else {
+				  result[i] = 0.0d;
+			  }
+		  }
+		  
+		  chkresult("pvrel_greaterThan", result);
+		  
+		  return result;
+	  }
+	  
+	  /*
+	   * PixelValueRelation (pvrel): equalTo given pixel value.
+	   */
+	  public Double[] pvrel_equalTo( Double[] img, Double pixelValue ) throws Exception {
+		  
+		  
+		  chkargs("pvrel_equalTo", img);
+		  chkargs("pvrel_equalTo", pixelValue);
+		  
+		  int len = img.length;
+		  Double[] result = new Double[len];
+		  for (int i=0; i < len; i++) {
+			  if ( img[i].equals( pixelValue ) ) {
+				  result[i] = 1.0d;
+			  }
+			  else {
+				  result[i] = 0.0d;
+			  }
+		  }
+		  
+		  chkresult("pvrel_equalTo", result);
+		  
+		  return result;
+	  }	  
+	  
+		/*
+		 *  name:			Total Error Rate Evaluation Measure (TEE)
+		 *  @see 			TBD.
+		 *
+		 *	description:	Takes 2 representations of image pixel data as input and generates a single numerical output.
+		 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
+		 *  
+		 *  @author 		B. Long
+		 *  version:		1.0
+		 */		
+		
+	public static Double _TEE = 0.0;
+	public static Double _TET = 0.0;
+	public static Double _ARI = 0.0;
+	public static Double _RI  = 0.0;
+	
+	public Double pixel_measure_tee_nD( Double[] im1, Double[] im2 ) throws Exception
+	{
+ 	 chkargs("pixel_measure_tee",im1,im2);
+
+      Double si     = 0.0d;
+      Double fp     = 0.0d;
+      Double fn     = 0.0d;
+      Double in_TE   = 0.0d;
+      Double tet     = 0.0d;
+      Double tee     = 0.0d;
+
+		  Double[] T       = null;
+		  Double[] E       = null;
+        Double[] Tc      = null;
+        Double[] Ec      = null;
+        Double[] N_TE    = null;
+        Double[] N_TcE   = null;
+        Double[] N_TEc   = null;
+        Double[] U_TE    = null;
+
+
+
+     	T= logical(im1);
+     	E= logical(im2);
+
+			Tc    = not(T);	
+
+			Ec    = not(E);
+         
+			N_TE    = and(T,E);
+			N_TcE   = and(Tc,E);
+			N_TEc   = and(T,Ec);
+			U_TE    = or(T,E);
+
+       Double c_T      = sum(T);
+       Double c_E      = sum(E);
+       Double cN_TE    = sum(N_TE);
+       Double cN_TcE  = sum(N_TcE);
+       Double cN_TEc  = sum(N_TEc);
+       Double cU_TE    = sum(U_TE);
+       
+       si     =  div(cN_TE,cU_TE);
+       fp     = div(cN_TcE,cU_TE);
+       fn     = div(cN_TEc,cU_TE);
+       in_TE   = cN_TE;
+       tet     = div(cN_TE,c_T);
+
+       if ( c_E.equals( 0.0d ) ) {
+         tee = 1.0d;
+       }
+       else {
+         tee = div(cN_TE,c_E);	
+       }
+       
+       _TEE=tee;
+       _TET=tet;
+       
+	        Double r = new Double(tee);
+	        
+	        chkresult("pixel_measure_tee",r);
+	        
+	        return r;		
+	}
+
+		/*
+		 *  name:			Total Error Rate Test Measure (TET)
+		 *  @see 			TBD.
+		 *
+		 *	description:	Takes 2 representations of image pixel data as input and generates a single numerical output.
+		 *					Is called by appropriate related class in gov.nist.itl.versus.similarity.comparisons.measure.impl.* .
+		 *  
+		 *  @author 		B. Long
+		 *  version:		1.0
+		 */	    
+		 			  
+	public Double pixel_measure_tet_nD(  Double[] im1, Double[] im2 ) throws Exception
+	{
+ 	 chkargs("pixel_measure_tet",im1,im2);
+
+      Double si     = 0.0d;
+      Double fp     = 0.0d;
+      Double fn     = 0.0d;
+      Double in_TE   = 0.0d;
+      Double tet     = 0.0d;
+      Double tee     = 0.0d;
+
+		  Double[] T       = null;
+		  Double[] E       = null;
+        Double[] Tc      = null;
+        Double[] Ec      = null;
+        Double[] N_TE    = null;
+        Double[] N_TcE   = null;
+        Double[] N_TEc   = null;
+        Double[] U_TE    = null;
+
+     	T= logical(im1);
+     	E= logical(im2);
+
+			Tc    = not(T);	
+			Ec    = not(E);
+			N_TE    = and(T,E);
+			N_TcE   = and(Tc,E);
+			N_TEc   = and(T,Ec);
+			U_TE    = or(T,E);
+
+       Double c_T      = sum(T);
+       Double c_E      = sum(E);
+       Double cN_TE    = sum(N_TE);
+       Double cN_TcE  = sum(N_TcE);
+       Double cN_TEc  = sum(N_TEc);
+       Double cU_TE    = sum(U_TE);
+       si     =  div(cN_TE,cU_TE);
+       fp     = div(cN_TcE,cU_TE);
+       fn     = div(cN_TEc,cU_TE);
+       in_TE   = cN_TE;
+       tet     = div(cN_TE,c_T);
+       if ( c_E.equals( 0.0d ) ) {
+         tee = 1.0d;
+       }
+       else {
+         tee = div(cN_TE,c_E);	
+       }
+       
+       _TEE=tee;
+       _TET=tet;
+       
+	        Double r = new Double(tet);
+	        
+	        chkresult("pixel_measure_tet",r);
+	        
+	        return r;		
+	}  			  
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	// PRIMITIVE OPERATIONS
+	//////////////////////////////////////////////////////////////////////////////////
+	
+	
+	public Double sum(double[] a) throws Exception {
+    	chkargs("sum",a);
+		int len = a.length;
+		Double b = 0d;
+		for (int i=0; i < len; i++) b = add(a[i], b);
+    	chkresult("sum",b);
+		return b;
+	}		
+	
+	
+//////////////////////////////////////////////////////////////////////////////////
+//SUPPORT METHODS
+//////////////////////////////////////////////////////////////////////////////////
+	    
+
+/////////////////  
+//BEG
+/////////////////
+
+public boolean chkargs( String methodName, double[] a ) throws Exception {
+	  if ( 	a == null ) throw new SingularityTreatmentException(methodName  + ": first argument null value");
+	  
+	  int len = a.length;
+	  for (int i=0; i < len; i++) {
+		  chkargs(methodName, a[i]);
+	  }	  
+	  return true;	// if we get here, we've had no exceptions.
+}
+
+
+public boolean chkargs( String methodName, double[][] a ) throws Exception {
+	  if ( 	a == null ) throw new SingularityTreatmentException(methodName  + ": first argument null value");
+	  
+	  int len = a.length;
+	  for (int i=0; i < len; i++) {
+		  chkargs(methodName, a[i]);
+	  }	  
+	  return true;	// if we get here, we've had no exceptions.
+}  
+
+
+public boolean chkresult( String methodName, double a ) throws Exception {
+	return chkargs(methodName,a);  
+}    
+
+public boolean chkresult( String methodName, double[] a ) throws Exception {
+	return chkargs(methodName,a);  
+}
+
   
 
+//END
+
+
 /////////////////////////////////
-// ImageOps auxilliary methods
+//ImageOps auxilliary methods
 /////////////////////////////////
 
 	public Double and( Double a, Double b ) throws Exception {
@@ -3373,6 +4078,21 @@ public class MathOpsE
 		return C;
 	}
 	
+	public double[] vectorize( double[][] A ) throws Exception {
+		chkargs("vectorize",A);
+		int len1 = A.length;
+		int len2 = A[0].length;
+		int len3 = len1*len2;
+		double[] C = new double[len1*len2];
+		for (int i=0; i < len1; i++) {
+		  for (int j=0; j < len2; j++) {
+			C[(i*len2)+j] = A[i][j];
+		  }
+		}
+		chkresult("vectorize",C);
+		return C;
+	}	
+	
 	public Double[] vectorize( Double[][][] A ) throws Exception {
 		chkargs("vectorize",A);
 		int len1 = A.length;
@@ -3422,49 +4142,6 @@ public class MathOpsE
 		return result;
 	}
 	
-	public Double[] img2Array( ImageData im ) throws Exception {
-		chkargs("img2Array", im);
-		double[][][] A = im.getValues();
-		int len1 = A.length;
-		int len2 = A[0].length;
-		int len3 = A[0][0].length;
-		Double[][][] B = new Double[len1][len2][len3];
-		for (int i=0; i < len1; i++) {
-			for (int j=0; j < len2; j++) {
-				for (int k=0; k < len3; k++) {
-					B[i][j][k] = new Double(A[i][j][k]);
-				}
-			}
-		}
-		Double[] C = vectorize(B);
-		chkresult("img2Array",C);
-		return C;
-	}
-	
-	public ImageData array2Img( Double[] A, Integer rows, Integer cols, Integer bands ) throws Exception {
-		chkargs("array2Img",A);
-		chkargs("array2Img",rows);
-		chkargs("array2Img",cols);
-		chkargs("array2Img",bands);
-		ImageData im = null;
-		double[][][] B = new double[rows][cols][bands];
-		int len1 = rows;
-		int len2 = cols;
-		int len3 = bands;
-		for (int i=0; i < len1; i++) {
-			for (int j=0; j < len2; j++) {
-				for (int k=0; k < len3; k++) {
-					int idx = (i*len2) + (j*len3) + k; 				
-						//System.out.println("(i,j,k,len1,len2,len3,idx)=("+i+","+j+","+k+","+len1+","+len2+","+len3+",B["+i+"]["+j+"]["+k+"]) = A["+idx+"] = " + A[idx] );
-					B[i][j][k] = A[ idx ];
-				}
-			}
-		}
-		im = new ImageData( B );
-		chkresult("array2Img",im);
-		return im;
-	}	
-
 	public Double[] mask( Double[] img, Double[] mask ) throws Exception {
 		chkargs("mask",img,mask);
 		int len = img.length;
@@ -3485,8 +4162,8 @@ public class MathOpsE
 	}
 
 	/*
-         * Given an input list of items, sort it and remove duplicates.
-         */
+       * Given an input list of items, sort it and remove duplicates.
+       */
 
 	public Double[] uniqueSort( Double[] list ) throws Exception {
 		chkargs("uniqueSort",list);
@@ -3518,7 +4195,7 @@ public class MathOpsE
 	 * example:
 	 *  im_nonZeroEntries = mask(origImg, imgMask);
 	 *  im_unsortedPixelValueList = uniquePixelValues(img);
- 	 */
+	 */
 
 	public Double[] uniquePixelValues( Double[] img ) throws Exception {
 		chkargs("uniquePixelValues",img);
@@ -3552,22 +4229,22 @@ public class MathOpsE
 	}
 
 	/* Get a list of values (often a vectorized sequance of non-zero entries from an image matrix)
-	 * return a binary list and 0-entries where the given value is found in the list and
+	 * return a binary list and 1-entries where the given value is found in the list and
 	 * 0-entries are found everywhere else.
-         */
+       */
 
 	public Double[] getMatches( Double[] originalContent, Double value ) throws Exception {
 		chkargs("getMatches",originalContent);
 		chkargs("getMatches",value);
-		ArrayList r = new ArrayList();
-		Double val = value.doubleValue();
 		Double k   = 0.0;
 		int len = originalContent.length;
 		Double[] B = new Double[len];
 
 		for (int i=0; i < len; i++) {
-			if ( k.equals( val ) )
-				B[i] = 1.0d;
+			k = originalContent[i];	// BJL FIX - missing stmt caused getMatches to not show matches as expected.
+			if ( k.equals( value ) )			
+			//if ( k == value  )
+				B[i] = 1.0d;			// NOTE: If match, then 1, else 0.
 			else
 				B[i] = 0.0d;
 		}
@@ -3577,9 +4254,9 @@ public class MathOpsE
 	}
 
 	/* 
-         * Returns the content of a given matrix's column
-         *
-         */
+       * Returns the content of a given matrix's column
+       *
+       */
 
 	public Double[] getColumn(Double[][] M, Integer rows, Integer col ) throws Exception {
 		chkargs("getColumn",M);
@@ -3596,8 +4273,8 @@ public class MathOpsE
 	}
 
 	/* 
-         * Returns content of a given matrix's row.
- 	 */
+       * Returns content of a given matrix's row.
+	 */
 
 	public Double[] getRow(Double M [][], Integer cols, Integer row ) throws Exception {
 		chkargs("getRow",M);
@@ -3614,7 +4291,7 @@ public class MathOpsE
 	}
 
 	/*
- 	 *  Computes n-choose-2.
+	 *  Computes n-choose-2.
 	 */
 
 	public Double nChoose2( Double n ) throws Exception {
@@ -3632,7 +4309,7 @@ public class MathOpsE
 	}
 	
 	/* 
-     * Create a 2D zero matrix.
+   * Create a 2D zero matrix.
 	 */
 
 	public Double[][] makeZeroMatrix2D( Integer rows, Integer cols, Double value )  throws Exception {
