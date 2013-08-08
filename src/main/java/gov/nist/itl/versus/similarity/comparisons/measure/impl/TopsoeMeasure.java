@@ -21,6 +21,7 @@ import gov.nist.itl.versus.similarity.comparisons.MathOpsE;
 import edu.illinois.ncsa.versus.UnsupportedTypeException;
 import edu.illinois.ncsa.versus.descriptor.Descriptor;
 import edu.illinois.ncsa.versus.descriptor.impl.GrayscaleHistogramDescriptor;
+import edu.illinois.ncsa.versus.descriptor.impl.PixelHistogramDescriptor;
 import edu.illinois.ncsa.versus.descriptor.impl.RGBHistogramDescriptor;
 import edu.illinois.ncsa.versus.measure.Measure;
 import edu.illinois.ncsa.versus.measure.Similarity;
@@ -119,7 +120,45 @@ public class TopsoeMeasure implements Measure, HasCategory, HasHelp
 				
                 return result;
         }
-	
+
+        /**
+         * Compares two Pixel Histograms.
+         *
+         * @param feature1 PixelHistogramDescriptor
+         * @param feature2 PixelHistogramDescriptor
+         * @return SimilarityNumber
+         * @throws Exception
+         */
+        public SimilarityNumber compare(PixelHistogramDescriptor feature1, PixelHistogramDescriptor feature2) throws Exception {
+
+                // Check feature lengths, they must be equal
+                if( feature1.getNumBins() != feature2.getNumBins() ) {
+                        throw new ImageCompatibilityException("Features must have the same length");
+                }
+
+                Double[] normHist1 = ops.normalizePixelHistogram( feature1 );
+				
+					if ( normHist1 == null ) 
+						throw new MathCompatibilityException("Histogram normalization failed for GrayscaleHistogramDescriptor histogram1");
+				
+                Double[] normHist2 = ops.normalizePixelHistogram( feature2 );
+				
+					if ( normHist2 == null ) 
+						throw new MathCompatibilityException("Histogram normalization failed for GrayscaleHistogramDescriptor histogram2");				
+
+                Double measurement  = ops.histogram_measure_topsoe( normHist1, normHist2 );
+				
+					if ( measurement == null ) 
+						throw new SingularityTreatmentException("Received null measurement value");	
+
+				SimilarityNumber result = new SimilarityNumber(measurement.doubleValue());
+				
+					if ( result == null )
+						throw new SingularityTreatmentException("Received null SimilarityNumber comparison result");
+				
+                return result;
+        }
+        
 		@Override
 		public SimilarityNumber compare(Descriptor feature1, Descriptor feature2)	throws Exception {
 				if (feature1 instanceof RGBHistogramDescriptor && feature2 instanceof RGBHistogramDescriptor) {
@@ -160,6 +199,25 @@ public class TopsoeMeasure implements Measure, HasCategory, HasHelp
 						
 						return result;
 				}
+				else if( feature1 instanceof PixelHistogramDescriptor && feature2 instanceof PixelHistogramDescriptor) {
+
+					PixelHistogramDescriptor histogramFeature1 = (PixelHistogramDescriptor) feature1;
+					
+						if ( histogramFeature1 == null )
+							throw new SWIndependenceException("Feature extraction failed for GrayscaleHistogramDescriptor feature1");						
+					
+					PixelHistogramDescriptor histogramFeature2 = (PixelHistogramDescriptor) feature2;
+					
+						if ( histogramFeature2 == null )
+							throw new SWIndependenceException("Feature extraction failed for GrayscaleHistogramDescriptor feature2");
+
+					SimilarityNumber result = compare(histogramFeature1, histogramFeature2);
+					
+						if ( result == null )
+							throw new SingularityTreatmentException("Received null SimilarityNumber comparison result");
+					
+					return result;
+			}
 				else {
 						throw new SWIndependenceException(
 										"Similarity measure expects features of type " + supportedTypesString() );
@@ -182,6 +240,7 @@ public class TopsoeMeasure implements Measure, HasCategory, HasHelp
 			Set features = new HashSet();
 			features.add( RGBHistogramDescriptor.class );
 			features.add( GrayscaleHistogramDescriptor.class );
+			features.add( PixelHistogramDescriptor.class );
 			return features;
 		}
 	

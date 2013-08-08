@@ -26,7 +26,9 @@ import edu.illinois.ncsa.versus.measure.Similarity;
 import edu.illinois.ncsa.versus.measure.SimilarityNumber;
 import edu.illinois.ncsa.versus.adapter.impl.ImageObjectAdapter;
 import edu.illinois.ncsa.versus.extract.impl.GrayscaleHistogramExtractor;
+import edu.illinois.ncsa.versus.extract.impl.PixelHistogramExtractor;
 import edu.illinois.ncsa.versus.descriptor.impl.GrayscaleHistogramDescriptor;
+import edu.illinois.ncsa.versus.descriptor.impl.PixelHistogramDescriptor;
 import edu.illinois.ncsa.versus.extract.impl.RGBHistogramExtractor;
 import edu.illinois.ncsa.versus.descriptor.impl.RGBHistogramDescriptor;
 import edu.illinois.ncsa.versus.measure.SimilarityNumber;
@@ -50,6 +52,78 @@ public class ClarkMeasureTest extends junit.framework.TestCase
 	public ClarkMeasureTest(){
 	
 	}
+	
+	public static SimilarityNumber pixelHist( String fileName1, String fileName2 ) throws Exception
+	{
+		
+		gsFileName1 = fileName1;
+		gsFileName2 = fileName2;
+		
+	// pixelhist	
+		ImageObjectAdapter a1 = new ImageObjectAdapter();
+			if ( a1 == null )
+				throw new SWIndependenceException("failed to create ImageObjectAdapter adapter for file1");
+				
+		ImageObjectAdapter a2 = new ImageObjectAdapter();
+			if ( a2 == null )
+				throw new SWIndependenceException("failed to create ImageObjectAdapter adapter for file2");
+				
+		SimilarityNumber result = null;
+		
+		try {
+			File f1 = new File(gsFileName1);			
+				if ( f1 == null )
+					throw new ImageCompatibilityException("failed to create file object for file1");
+			
+			File f2 = new File(gsFileName2);
+				if ( f2 == null )
+					throw new ImageCompatibilityException("failed to create file object for file2");
+
+			a1.load( f1 );
+				if ( a1 == null )
+					throw new SWIndependenceException("failed to load file1 into adapter1");
+			a2.load( f2 );			
+				if ( a2 == null )
+					throw new SWIndependenceException("failed to load file2 into adapter2");			
+					
+			PixelHistogramExtractor x1 = new PixelHistogramExtractor();
+				if ( x1 == null )
+					throw new SWIndependenceException("failed to create GrayscaleHistogramExtractor object for extractor1");			
+					
+				PixelHistogramExtractor x2 = new PixelHistogramExtractor();
+				if ( x2 == null )
+					throw new SWIndependenceException("failed to create GrayscaleHistogramExtractor object for extractor2");						
+			
+				PixelHistogramDescriptor desc1 = (PixelHistogramDescriptor) x1.extract(a1);
+				if ( desc1 == null )
+					throw new SWIndependenceException("failed to extract GrayscaleHistogramDescriptor feature1 via extractor1");			
+					
+				PixelHistogramDescriptor desc2 = (PixelHistogramDescriptor) x2.extract(a2);
+				if ( desc2 == null )
+					throw new SWIndependenceException("failed to extract GrayscaleHistogramDescriptor feature2 via extractor2");
+			
+			ClarkMeasure m 		= new ClarkMeasure();
+			
+				if ( m == null )
+					throw new SWIndependenceException("failed to create ClarkMeasure object for measure");
+					
+			result 	= m.compare(desc1, desc2);
+			
+				if ( result == null )
+					throw new SingularityTreatmentException("received null comparison result");			
+			
+			String SEP = ",";
+			String rString = fileName1 + SEP + fileName2 + SEP + "ImageObjectAdapter" + SEP + "GrayscaleHistogramDescriptor" + SEP + "ClarkMeasure" + SEP + result.getValue() ;
+			System.out.println ( rString );
+	
+		} catch (IOException e) {
+			throw new ImageCompatibilityException( "failed to load file via adapter into memory" );
+			
+		} 
+		
+		return result;
+	}
+	
 	
 	public static SimilarityNumber grayscale( String fileName1, String fileName2 ) throws Exception
 	{
@@ -216,6 +290,8 @@ public class ClarkMeasureTest extends junit.framework.TestCase
 		try {
 				grayscale(gsFileName1, gsFileName2);
 				rgb(rgbFileName1, rgbFileName2);	
+				pixelHist(rgbFileName1, rgbFileName2);
+				pixelHist(gsFileName1, gsFileName2);
 		}
 		catch( Exception e ) {
 			System.out.println("Error:" + e.getMessage() );
